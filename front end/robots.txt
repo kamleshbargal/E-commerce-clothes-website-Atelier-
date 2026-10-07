@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://clothes-website-atelier.onrender.com/sitemap.xml

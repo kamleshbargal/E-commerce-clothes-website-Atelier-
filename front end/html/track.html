@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Order - StyleHub Haute Atelier</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo-wrap">
+                <a class="logo" href="index.html">StyleHub <span>.</span></a>
+            </div>
+            <nav class="nav-desktop">
+                <a class="nav-link" href="index.html">Home</a>
+                <a class="nav-link" href="product.html">Catalog</a>
+                <a class="nav-link active" href="track.html">Track Order</a>
+                <a class="nav-link" href="profile.html">My Account</a>
+            </nav>
+            <div class="header-actions">
+                <a href="cart.html" class="header-icon-btn" aria-label="Shopping Bag">
+                    <span>🛍️</span>
+                    <span class="cart-count-badge">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main style="max-width: 900px; margin: 3rem auto 6rem; padding: 0 1.5rem;">
+        
+        <!-- Hero Tracking Header -->
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <span class="hero-tag">COURIER DISPATCH RADAR</span>
+            <h1 style="font-family: var(--font-serif); font-size: 2.4rem; margin: 0.5rem 0 0.8rem; color: var(--text-primary);">
+                Track Your Atelier Package
+            </h1>
+            <p style="color: var(--text-secondary); max-width: 580px; margin: 0 auto; font-size: 0.95rem; line-height: 1.6;">
+                Enter your <strong>Order ID</strong> (e.g. <code>#SH-2026-5</code> or <code>5</code>) or your <strong>Registered 10-Digit Mobile Number</strong> to see your delivery progress in real time.
+            </p>
+        </div>
+
+        <!-- Tracking Search Form -->
+        <div style="background: #ffffff; border: 1px solid var(--border-medium); border-radius: 16px; padding: 1.8rem 2rem; box-shadow: 0 6px 25px rgba(0,0,0,0.04); margin-bottom: 2.5rem;">
+            <form id="track-order-form" onsubmit="handleOrderTrack(event)" style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+                <input type="text" id="track-query-input" placeholder="Enter Order ID or Mobile Number..." required
+                       style="flex: 1; min-width: 250px; padding: 0.9rem 1.2rem; font-size: 0.95rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs); background: var(--bg-main);">
+                <button type="submit" id="btn-track-submit" class="btn-primary" style="padding: 0.9rem 2rem; font-weight: 700; white-space: nowrap;">
+                    Track Courier <span>➔</span>
+                </button>
+            </form>
+            <div style="display: flex; gap: 0.6rem; margin-top: 0.8rem; align-items: center; flex-wrap: wrap; font-size: 0.78rem; color: var(--text-muted);">
+                <span>Quick Test:</span>
+                <button type="button" onclick="document.getElementById('track-query-input').value='5'; document.getElementById('track-order-form').dispatchEvent(new Event('submit'))" style="background: none; border: 1px dashed var(--border-medium); padding: 0.2rem 0.5rem; border-radius: 4px; cursor: pointer; color: var(--accent-gold);">Order #5</button>
+                <button type="button" onclick="document.getElementById('track-query-input').value='9209962961'; document.getElementById('track-order-form').dispatchEvent(new Event('submit'))" style="background: none; border: 1px dashed var(--border-medium); padding: 0.2rem 0.5rem; border-radius: 4px; cursor: pointer; color: var(--accent-gold);">Phone: 9209962961</button>
+            </div>
+            <div id="track-error" style="color: var(--accent-terracotta); font-size: 0.85rem; margin-top: 0.8rem; display: none;"></div>
+        </div>
+
+        <!-- Result Container -->
+        <div id="track-result-container" style="display: none; animation: fadeInAdmin 0.35s ease-out;">
+            
+            <!-- Tracking Stepper -->
+            <div class="admin-card-form" style="margin-bottom: 2rem; padding: 2.2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 1rem;">
+                    <div>
+                        <span id="tracker-order-badge" class="admin-badge" style="background: rgba(197, 160, 89, 0.15); color: #8a661b;">ORDER #SH-2026-5</span>
+                        <h3 id="tracker-status-heading" style="font-size: 1.4rem; margin: 0.3rem 0 0.1rem;">Package Status: Dispatched</h3>
+                        <span id="tracker-date-sub" style="font-size: 0.8rem; color: var(--text-muted);">Recorded on Sep 13, 2026</span>
+                    </div>
+                    <div id="tracker-status-pill"></div>
+                </div>
+
+                <!-- 5-Step Visual Courier Stepper -->
+                <div class="tracker-stepper">
+                    <div class="tracker-step" id="step-placed">
+                        <div class="tracker-step-circle">1</div>
+                        <div class="tracker-step-label">Placed</div>
+                    </div>
+                    <div class="tracker-step" id="step-processing">
+                        <div class="tracker-step-circle">2</div>
+                        <div class="tracker-step-label">Tailoring</div>
+                    </div>
+                    <div class="tracker-step" id="step-shipped">
+                        <div class="tracker-step-circle">3</div>
+                        <div class="tracker-step-label">Dispatched</div>
+                    </div>
+                    <div class="tracker-step" id="step-out">
+                        <div class="tracker-step-circle">4</div>
+                        <div class="tracker-step-label">Out for Delivery</div>
+                    </div>
+                    <div class="tracker-step" id="step-delivered">
+                        <div class="tracker-step-circle">5</div>
+                        <div class="tracker-step-label">Delivered</div>
+                    </div>
+                </div>
+
+                <div style="padding: 1rem 1.2rem; background: var(--bg-main); border-radius: var(--radius-xs); border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem; font-size: 0.85rem;">
+                    <div style="display: flex; align-items: center; gap: 0.6rem;">
+                        <span style="font-size: 1.3rem;">🚚</span>
+                        <div>
+                            <strong style="display: block; color: var(--text-primary);" id="tracker-courier-title">Bluedart Express Courier Partner</strong>
+                            <span style="color: var(--text-muted); font-size: 0.78rem;" id="tracker-courier-sub">Air Cargo Route • Mumbai Hub</span>
+                        </div>
+                    </div>
+                    <a id="btn-tracker-whatsapp" href="#" target="_blank" class="btn-whatsapp-card" style="padding: 0.5rem 1rem;">
+                        💬 Inquire on WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <!-- Package Details Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                <div style="background: #ffffff; border: 1px solid var(--border-medium); border-radius: 12px; padding: 1.5rem;">
+                    <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; display: block; margin-bottom: 0.6rem;">Delivery Recipient</span>
+                    <strong id="tracker-recipient-name" style="font-size: 1.1rem; display: block; margin-bottom: 0.3rem;">Customer</strong>
+                    <div style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5;">
+                        <p id="tracker-recipient-phone" style="margin: 0.2rem 0;">📞 +91 ••••• •••••</p>
+                        <p id="tracker-recipient-email" style="margin: 0.2rem 0;">✉️ cust***</p>
+                        <p id="tracker-recipient-address" style="margin: 0.4rem 0 0; color: var(--text-primary);">📍 Delivery Address</p>
+                    </div>
+                </div>
+
+                <div style="background: #ffffff; border: 1px solid var(--border-medium); border-radius: 12px; padding: 1.5rem;">
+                    <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; display: block; margin-bottom: 0.6rem;">Order Details</span>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.6rem; font-size: 0.88rem;">
+                        <span style="color: var(--text-secondary);">Grand Total:</span>
+                        <strong id="tracker-order-total" style="color: var(--accent-gold); font-size: 1.2rem;">₹0</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.6rem; font-size: 0.88rem;">
+                        <span style="color: var(--text-secondary);">Payment:</span>
+                        <strong style="color: #10b981;">✓ Verified Authenticated</strong>
+                    </div>
+                    <div style="margin-top: 1.2rem; border-top: 1px solid var(--border-light); padding-top: 0.8rem; text-align: center;">
+                        <a href="index.html" class="btn-secondary" style="display: inline-block; padding: 0.6rem 1.4rem; font-size: 0.84rem;">
+                            Continue Shopping ↗
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            <p>&copy; 2026 StyleHub Haute Atelier. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script>
+        async function handleOrderTrack(e) {
+            e.preventDefault();
+            const input = document.getElementById('track-query-input');
+            const errorEl = document.getElementById('track-error');
+            const resultContainer = document.getElementById('track-result-container');
+            const btn = document.getElementById('btn-track-submit');
+            const query = input.value.trim();
+
+            if (!query) return;
+
+            errorEl.style.display = 'none';
+            btn.disabled = true;
+            btn.textContent = 'Locating...';
+
+            const trackApiBase = (window.location.port === "5500") 
+                ? "http://127.0.0.1:5000" 
+                : (window.location.origin.startsWith("http") ? window.location.origin : "http://127.0.0.1:5000");
+
+            try {
+                const res = await fetch(`${trackApiBase}/api/orders/track?query=${encodeURIComponent(query)}`);
+                const data = await res.json();
+
+                if (!res.ok) {
+                    errorEl.textContent = data.error || 'No order found matching your search.';
+                    errorEl.style.display = 'block';
+                    resultContainer.style.display = 'none';
+                    return;
+                }
+
+                // Render Results
+                document.getElementById('tracker-order-badge').textContent = `ORDER ${data.formatted_id}`;
+                document.getElementById('tracker-status-heading').textContent = `Package Status: ${data.status}`;
+                document.getElementById('tracker-date-sub').textContent = `Placed on ${data.created_at}`;
+                document.getElementById('tracker-recipient-name').textContent = data.customer_name;
+                document.getElementById('tracker-recipient-phone').textContent = `📞 ${data.masked_phone}`;
+                document.getElementById('tracker-recipient-email').textContent = `✉️ ${data.masked_email}`;
+                document.getElementById('tracker-recipient-address').textContent = `📍 ${data.address}`;
+                document.getElementById('tracker-order-total').textContent = `₹${data.total.toLocaleString()}`;
+
+                // Status pill
+                const pillWrap = document.getElementById('tracker-status-pill');
+                const st = (data.status || 'Pending').toLowerCase();
+                let statusClass = 'pending';
+                if (st === 'processing') statusClass = 'processing';
+                if (st === 'shipped') statusClass = 'processing';
+                if (st === 'delivered') statusClass = 'delivered';
+                if (st === 'cancelled') statusClass = 'cancelled';
+                pillWrap.innerHTML = `<span class=\"status-tag ${statusClass}\" style=\"font-size: 0.85rem; padding: 0.35rem 0.8rem;\">${data.status}</span>`;
+
+                // Update 5-step stepper
+                const steps = ['step-placed', 'step-processing', 'step-shipped', 'step-out', 'step-delivered'];
+                steps.forEach(s => {
+                    const el = document.getElementById(s);
+                    if (el) el.className = 'tracker-step';
+                });
+
+                const stepMap = {
+                    'pending': 1,
+                    'processing': 2,
+                    'shipped': 3,
+                    'out for delivery': 4,
+                    'delivered': 5,
+                    'cancelled': 0
+                };
+
+                const currentStepNum = stepMap[st] || 1;
+                for (let i = 0; i < steps.length; i++) {
+                    const el = document.getElementById(steps[i]);
+                    if (!el) continue;
+                    if (i + 1 < currentStepNum) {
+                        el.className = 'tracker-step completed';
+                    } else if (i + 1 === currentStepNum) {
+                        el.className = 'tracker-step active';
+                    }
+                }
+
+                // WhatsApp Inquiry button
+                const waBtn = document.getElementById('btn-tracker-whatsapp');
+                if (waBtn) {
+                    const waMsg = `Hello StyleHub Atelier, I am inquiring about my Order ${data.formatted_id} (Status: ${data.status}).`;
+                    waBtn.href = `https://wa.me/919209962961?text=${encodeURIComponent(waMsg)}`;
+                }
+
+                resultContainer.style.display = 'block';
+            } catch (err) {
+                errorEl.textContent = 'Network error communicating with tracking server.';
+                errorEl.style.display = 'block';
+                resultContainer.style.display = 'none';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `Track Courier <span>➔</span>`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const query = urlParams.get('query') || urlParams.get('id') || urlParams.get('orderId');
+            if (query) {
+                const input = document.getElementById('track-query-input');
+                if (input) {
+                    input.value = query;
+                    document.getElementById('track-order-form')?.dispatchEvent(new Event('submit'));
+                }
+            }
+        });
+    </script>
+</body>
+</html>

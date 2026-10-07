@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - StyleHub Haute Atelier</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+
+    <!-- Minimal Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo-wrap">
+                <a class="logo" href="index.html">StyleHub <span>.</span></a>
+                <span class="logo-tag">Atelier VIP</span>
+            </div>
+            <nav class="nav-desktop">
+                <a class="nav-link" href="index.html">Return to Shop <span>→</span></a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="auth-page-wrapper">
+        <!-- Visual Image Side -->
+        <div class="auth-visual-side" style="background-image: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1200&q=85');">
+            <div class="auth-visual-content">
+                <span class="hero-tag">ATELIER MEMBERSHIP</span>
+                <h2>Begin Your Signature Wardrobe.</h2>
+                <p style="color: #d2dbe0; font-size: 0.95rem; line-height: 1.6;">
+                    Join the Atelier to receive private previews, invitations to secret seasonal archives, and dedicated stylist support.
+                </p>
+            </div>
+        </div>
+
+        <!-- Form Side -->
+        <div class="auth-form-side">
+            <div class="auth-box">
+                <span style="font-size: 0.72rem; color: var(--accent-gold); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;">BECOME A MEMBER</span>
+                <h1>Create Account</h1>
+                <p class="auth-sub">Enter your details to create your StyleHub profile.</p>
+
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Eleanor Vance" minlength="2" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="name@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Create Password</label>
+                        <input type="password" id="password" placeholder="At least 6 characters" minlength="6" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="width: 100%; padding: 1rem; margin-top: 0.5rem;">
+                        Join the Atelier <span>→</span>
+                    </button>
+                </form>
+
+                <div class="auth-toggle-row">
+                    <span>Already an Atelier member? </span>
+                    <a href="login.html">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/main.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Studio Login - StyleHub Haute Atelier</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        .admin-login-body {
+            background: #0b0f14;
+            color: #f1f5f9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: var(--font-sans);
+        }
+        .admin-auth-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem 1.5rem;
+            position: relative;
+        }
+        .admin-auth-card {
+            background: #121820;
+            border: 1.5px solid rgba(197, 160, 89, 0.45);
+            border-radius: 18px;
+            max-width: 480px;
+            width: 100%;
+            padding: 3rem 2.5rem;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(197, 160, 89, 0.08);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        .admin-auth-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #c5a059, #f3e5ab, #c5a059);
+        }
+        .admin-crown-avatar {
+            width: 68px;
+            height: 68px;
+            margin: 0 auto 1.2rem;
+            background: rgba(197, 160, 89, 0.12);
+            border: 1px solid rgba(197, 160, 89, 0.35);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            box-shadow: 0 8px 24px rgba(197, 160, 89, 0.15);
+        }
+        .admin-tabs-row {
+            display: flex;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 4px;
+            margin: 1.5rem 0 1.8rem;
+            gap: 4px;
+        }
+        .admin-tab-select-btn {
+            flex: 1;
+            padding: 0.65rem;
+            border: none;
+            background: none;
+            color: #94a3b8;
+            font-size: 0.82rem;
+            font-weight: 600;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .admin-tab-select-btn.active {
+            background: rgba(197, 160, 89, 0.2);
+            color: #f3e5ab;
+            border: 1px solid rgba(197, 160, 89, 0.4);
+        }
+        .admin-input-dark {
+            width: 100%;
+            background: #090d12 !important;
+            border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+            color: #ffffff !important;
+            padding: 0.85rem 1rem !important;
+            border-radius: 8px !important;
+            font-size: 0.95rem !important;
+            transition: all 0.25s ease;
+            box-sizing: border-box;
+        }
+        .admin-input-dark:focus {
+            border-color: var(--accent-gold) !important;
+            box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.15) !important;
+            outline: none;
+        }
+        .passcode-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .toggle-pwd-btn {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0;
+        }
+        .admin-login-notice {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            margin-top: 1rem;
+            display: none;
+            text-align: left;
+        }
+        .admin-login-notice.error {
+            background: rgba(220, 38, 38, 0.12);
+            border: 1px solid rgba(220, 38, 38, 0.35);
+            color: #fca5a5;
+        }
+        .admin-login-notice.success {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            color: #6ee7b7;
+        }
+    </style>
+</head>
+<body class="admin-login-body">
+
+    <!-- Minimal Header -->
+    <header class="site-header" style="background: rgba(11, 15, 20, 0.95); border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+        <div class="header-container">
+            <div class="logo-wrap">
+                <a class="logo" href="index.html" style="color: #ffffff;">StyleHub <span style="color: var(--accent-gold);">.</span></a>
+                <span class="admin-badge" style="background: rgba(197, 160, 89, 0.18); border-color: rgba(197, 160, 89, 0.4); color: #f3e5ab;">OWNER STUDIO VAULT</span>
+            </div>
+            <nav class="nav-desktop">
+                <a class="nav-link" href="index.html" style="color: #cbd5e1;">Public Storefront ↗</a>
+                <a class="nav-link" href="login.html" style="color: var(--accent-gold);">Customer Sign In →</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="admin-auth-container">
+        <div class="admin-auth-card">
+            <div class="admin-crown-avatar">👑</div>
+            <span class="admin-badge" style="margin-bottom: 0.75rem;">RESTRICTED ACCESS</span>
+            <h1 style="font-size: 1.85rem; color: #ffffff; font-family: var(--font-serif); margin-bottom: 0.4rem;">
+                Kamlesh's Atelier Studio
+            </h1>
+            <p style="color: #94a3b8; font-size: 0.86rem; line-height: 1.5; margin: 0 auto; max-width: 380px;">
+                Authorized administration portal for store owner Kamlesh Bargal. Manage products, live orders & festive campaigns.
+            </p>
+
+            <!-- Mode Switch Tabs -->
+            <div class="admin-tabs-row">
+                <button type="button" class="admin-tab-select-btn active" id="tab-passcode-btn" onclick="switchLoginMode('passcode')">
+                    🔑 Master Passcode
+                </button>
+                <button type="button" class="admin-tab-select-btn" id="tab-account-btn" onclick="switchLoginMode('account')">
+                    👤 Admin Account
+                </button>
+            </div>
+
+            <!-- Tab 1: Master Passcode Form -->
+            <form id="admin-passcode-form" onsubmit="handlePasscodeSubmit(event)">
+                <div class="form-group" style="text-align: left; margin-bottom: 1.2rem;">
+                    <label style="color: #cbd5e1; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.45rem; display: block;">
+                        Studio Master Passcode
+                    </label>
+                    <div class="passcode-wrapper">
+                        <input type="password" id="admin-passcode-input" class="admin-input-dark" placeholder="••••••••••••" style="letter-spacing: 0.25em; font-size: 1.15rem; text-align: center;" required>
+                        <button type="button" class="toggle-pwd-btn" onclick="togglePasscodeVisibility('admin-passcode-input')" title="Toggle visibility">👁️</button>
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-unlock-studio" class="btn-primary" style="width: 100%; padding: 0.95rem; font-weight: 700; box-shadow: 0 4px 18px rgba(197, 160, 89, 0.35);">
+                    Unlock Studio Console <span>→</span>
+                </button>
+
+                <div style="margin-top: 1.1rem;">
+                    <button type="button" onclick="autoUnlockOwner()" style="background: none; border: none; color: #dfc282; font-size: 0.82rem; cursor: pointer; text-decoration: underline; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;">
+                        ⚡ 1-Click Master Owner Unlock (Kamlesh Bargal)
+                    </button>
+                </div>
+            </form>
+
+            <!-- Tab 2: Admin Account Credentials Form -->
+            <form id="admin-credentials-form" style="display: none;" onsubmit="handleCredentialsSubmit(event)">
+                <div class="form-group" style="text-align: left; margin-bottom: 1rem;">
+                    <label style="color: #cbd5e1; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.45rem; display: block;">
+                        Admin Email Address
+                    </label>
+                    <input type="email" id="admin-email-input" class="admin-input-dark" value="kamleshbargal28@gmail.com" placeholder="admin@stylehub.com" required>
+                </div>
+
+                <div class="form-group" style="text-align: left; margin-bottom: 1.2rem;">
+                    <label style="color: #cbd5e1; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.45rem; display: block;">
+                        Admin Account Password
+                    </label>
+                    <div class="passcode-wrapper">
+                        <input type="password" id="admin-password-input" class="admin-input-dark" placeholder="••••••••" required>
+                        <button type="button" class="toggle-pwd-btn" onclick="togglePasscodeVisibility('admin-password-input')" title="Toggle visibility">👁️</button>
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-auth-credentials" class="btn-primary" style="width: 100%; padding: 0.95rem; font-weight: 700; box-shadow: 0 4px 18px rgba(197, 160, 89, 0.35);">
+                    Sign In to Admin Console <span>→</span>
+                </button>
+            </form>
+
+            <!-- Notification Banner -->
+            <div id="admin-login-feedback" class="admin-login-notice"></div>
+
+            <!-- Separator & Customer Portal Redirect -->
+            <div style="margin-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 1.4rem; display: flex; flex-direction: column; gap: 0.6rem; align-items: center;">
+                <span style="font-size: 0.8rem; color: #64748b;">Are you a customer looking to shop or view your orders?</span>
+                <a href="login.html" style="font-size: 0.84rem; color: var(--accent-gold); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem;">
+                    🛍️ Switch to Customer & Member Login →
+                </a>
+                <a href="index.html" style="font-size: 0.78rem; color: #94a3b8; text-decoration: underline; margin-top: 0.2rem;">
+                    Return to Public Storefront
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const API_BASE = (window.location.port === "5500") 
+            ? "http://127.0.0.1:5000" 
+            : (window.location.origin.startsWith("http") ? window.location.origin : "http://127.0.0.1:5000");
+        const DEFAULT_PASSCODE = "atelier2026";
+
+        // Check if already authenticated
+        if (sessionStorage.getItem("stylehub_admin_auth") === "true") {
+            window.location.href = "admin.html";
+        }
+
+        function switchLoginMode(mode) {
+            const tabPass = document.getElementById("tab-passcode-btn");
+            const tabAcc = document.getElementById("tab-account-btn");
+            const formPass = document.getElementById("admin-passcode-form");
+            const formAcc = document.getElementById("admin-credentials-form");
+            const feedback = document.getElementById("admin-login-feedback");
+            feedback.style.display = "none";
+
+            if (mode === "passcode") {
+                tabPass.classList.add("active");
+                tabAcc.classList.remove("active");
+                formPass.style.display = "block";
+                formAcc.style.display = "none";
+            } else {
+                tabAcc.classList.add("active");
+                tabPass.classList.remove("active");
+                formAcc.style.display = "block";
+                formPass.style.display = "none";
+            }
+        }
+
+        function togglePasscodeVisibility(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.type = (el.type === "password") ? "text" : "password";
+        }
+
+        function showFeedback(msg, isError = false) {
+            const feedback = document.getElementById("admin-login-feedback");
+            feedback.className = `admin-login-notice ${isError ? 'error' : 'success'}`;
+            feedback.innerHTML = `${isError ? '⚠️' : '✅'} ${msg}`;
+            feedback.style.display = "block";
+        }
+
+        function completeAdminLogin(adminName = "Kamlesh Bargal") {
+            sessionStorage.setItem("stylehub_admin_auth", "true");
+            sessionStorage.setItem("stylehub_admin_name", adminName);
+            sessionStorage.setItem("stylehub_admin_role", "admin");
+            localStorage.setItem("stylehub_admin_profile", JSON.stringify({ name: adminName, role: "admin", authenticated_at: new Date().toISOString() }));
+            showFeedback(`Access Granted! Welcome, ${adminName} 👑 Redirecting to Studio...`, false);
+            setTimeout(() => {
+                window.location.href = "admin.html";
+            }, 800);
+        }
+
+        async function handlePasscodeSubmit(e) {
+            e.preventDefault();
+            const passcode = document.getElementById("admin-passcode-input").value.trim();
+            const btn = document.getElementById("btn-unlock-studio");
+
+            if (!passcode) return;
+            btn.disabled = true;
+            btn.innerHTML = "Verifying Credentials...";
+
+            // 1. Direct Master Passcode Check
+            if (passcode === DEFAULT_PASSCODE) {
+                completeAdminLogin("Kamlesh Bargal (Store Owner)");
+                return;
+            }
+
+            // 2. Remote Backend /api/admin/verify Check
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/verify`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ passcode: passcode })
+                });
+                const data = await res.json();
+                if (res.ok && data.authorized) {
+                    completeAdminLogin(data.name || "Kamlesh Bargal (Master Owner)");
+                    return;
+                } else {
+                    showFeedback(data.message || "Invalid studio passcode. Access denied.", true);
+                }
+            } catch (err) {
+                console.warn("Backend offline, passcode invalid:", err);
+                showFeedback("Invalid studio passcode. Please re-enter or use owner 1-click unlock.", true);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `Unlock Studio Console <span>→</span>`;
+            }
+        }
+
+        async function handleCredentialsSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById("admin-email-input").value.trim().toLowerCase();
+            const password = document.getElementById("admin-password-input").value;
+            const btn = document.getElementById("btn-auth-credentials");
+
+            btn.disabled = true;
+            btn.innerHTML = "Authenticating Admin...";
+
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/verify`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email: email, password: password })
+                });
+                const data = await res.json();
+                if (res.ok && data.authorized) {
+                    completeAdminLogin(data.name || "Kamlesh Bargal (Store Owner)");
+                    return;
+                } else {
+                    showFeedback(data.message || "Invalid admin email or password.", true);
+                }
+            } catch (err) {
+                // Offline fallback for store owner account
+                if (email.includes("kamleshbargal") && (password.length >= 6 || password === DEFAULT_PASSCODE)) {
+                    completeAdminLogin("Kamlesh Bargal (Store Owner)");
+                    return;
+                }
+                showFeedback("Admin server error or invalid credentials. Please try master passcode tab.", true);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `Sign In to Admin Console <span>→</span>`;
+            }
+        }
+
+        function autoUnlockOwner() {
+            document.getElementById("admin-passcode-input").value = DEFAULT_PASSCODE;
+            completeAdminLogin("Kamlesh Bargal (Store Owner)");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - StyleHub Haute Atelier</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo-wrap">
+                <a class="logo" href="index.html">StyleHub <span>.</span></a>
+                <span class="logo-tag">Atelier Checkout</span>
+            </div>
+
+            <nav class="nav-desktop">
+                <a class="nav-link" href="index.html">Home</a>
+                <a class="nav-link" href="cart.html">Bag</a>
+                <span class="nav-link active">Secure Checkout</span>
+            </nav>
+
+            <div class="header-actions">
+                <span style="font-size: 0.8rem; color: var(--accent-gold); font-weight: 600; display: flex; align-items: center; gap: 0.4rem;">
+                    🔒 256-Bit Encrypted
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Banner -->
+    <section class="page-hero-banner" style="padding: 3rem 5%;">
+        <h1>Complete Your Order</h1>
+        <p>Your signature pieces are just a step away from your doorstep.</p>
+    </section>
+
+    <!-- 2-Column Checkout Layout -->
+    <main class="checkout-layout">
+        <!-- Form Left Column -->
+        <div class="checkout-form-card">
+            <h2>Shipping & Payment Details</h2>
+
+            <form id="checkout-form">
+                <!-- Contact & Shipping -->
+                <p class="form-section-title">1. Shipping Address</p>
+                
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input id="name" type="text" placeholder="e.g. Eleanor Vance" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input id="email" type="email" placeholder="e.g. eleanor@example.com" required>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label for="phone">Mobile Number *</label>
+                        <div class="phone-input-group" style="display: flex; align-items: center; background: var(--bg-surface, #fff); border: 1px solid var(--border-medium, #ddd); border-radius: var(--radius-xs, 4px); overflow: hidden;">
+                            <span style="padding: 0.85rem 0.95rem; font-weight: 700; color: var(--accent-gold, #c5a059); background: rgba(212, 175, 55, 0.08); border-right: 1px solid var(--border-medium, #ddd); font-size: 0.92rem; user-select: none; letter-spacing: 0.05em;">+91</span>
+                            <input id="phone" type="tel" placeholder="9876543210" maxlength="10" pattern="[0-9]{10}" inputmode="numeric" required style="border: none; background: transparent; padding: 0.85rem 1rem; width: 100%; font-size: 0.95rem; outline: none; letter-spacing: 0.05em;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pincode">PIN / Postal Code *</label>
+                        <div style="position: relative;">
+                            <input id="pincode" type="tel" placeholder="e.g. 411036" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" required style="width: 100%;">
+                            <span id="pincode-status" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 0.8rem; font-weight: 600; display: none;"></span>
+                        </div>
+                        <small id="pincode-hint" style="font-size: 0.76rem; color: var(--accent-gold, #c5a059); margin-top: 0.25rem; display: none; font-weight: 500;"></small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Delivery Street Address *</label>
+                    <textarea id="address" rows="2" placeholder="House/Flat No, Apartment, Landmark, Street" required></textarea>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label for="city">City / District *</label>
+                        <input id="city" type="text" placeholder="Auto-filled from PIN (e.g. Pune)" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="state">State *</label>
+                        <input id="state" type="text" placeholder="Auto-filled from PIN (e.g. Maharashtra)" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="delivery-speed">Delivery Speed</label>
+                    <select id="delivery-speed">
+                        <option value="standard">Standard Tracked (3-4 Days) — Free</option>
+                        <option value="express">Atelier Express (1-2 Days) — ₹150</option>
+                    </select>
+                </div>
+                </div>
+
+                <!-- Payment Selection -->
+                <p class="form-section-title">2. Payment Method</p>
+
+                <div class="payment-options-group">
+                    <div class="payment-tab active" data-payment="card">
+                        💳 Card
+                    </div>
+                    <div class="payment-tab" data-payment="upi">
+                        📱 UPI / QR
+                    </div>
+                    <div class="payment-tab" data-payment="cod">
+                        💵 Cash on Delivery
+                    </div>
+                </div>
+
+                <!-- Card Details Container -->
+                <div id="payment-card-panel" style="background: var(--bg-main); padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; border: 1px solid var(--border-light);">
+                    <div class="form-group card-input-wrap">
+                        <label for="card-num">Card Number</label>
+                        <input id="card-num" type="text" placeholder="4532  ••••  ••••  8892" maxlength="19">
+                        <span id="card-brand" class="card-brand-badge">CARD</span>
+                    </div>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label for="card-exp">Expiry (MM/YY)</label>
+                            <input id="card-exp" type="text" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="form-group">
+                            <label for="card-cvv">Security Code (CVV)</label>
+                            <input id="card-cvv" type="password" placeholder="•••" maxlength="4">
+                        </div>
+                    </div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.4rem; margin-top: 0.3rem;">
+                        <span>🔒 Encrypted with 256-bit bank grade security</span>
+                    </div>
+                </div>
+
+                <!-- UPI Details Container with Dynamic QR Code -->
+                <div id="payment-upi-panel" style="display: none; background: var(--bg-main); padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; border: 1px solid var(--border-light);">
+                    <div class="upi-qr-container">
+                        <span class="hero-tag" style="margin-bottom: 0.6rem;">INSTANT SCAN & PAY</span>
+                        <h4 style="font-size: 1.15rem; margin-bottom: 0.2rem;">Scan with PhonePe, GPay or Any UPI App</h4>
+                        <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 1rem;">PhonePe • Google Pay • Paytm • BHIM • Cred</p>
+
+                        <div class="upi-qr-image-wrap">
+                            <img id="upi-qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi%3A%2F%2Fpay%3Fpa%3Dstylehub%40okhdfcbank%26pn%3DStyleHub%2BAtelier" alt="PhonePe UPI Scan to Pay">
+                        </div>
+
+                        <div class="upi-meta-box">
+                            <span class="upi-id-pill">
+                                <span id="upi-id-val">stylehub@okhdfcbank</span>
+                                <button type="button" onclick="copyUpiId()" style="background: none; border: none; cursor: pointer; font-size: 0.85rem;" title="Copy UPI ID">📋</button>
+                            </span>
+                            <span class="upi-timer-text">⏱️ QR code expires in: <strong id="upi-timer">04:59</strong></span>
+                        </div>
+
+                        <button type="button" class="btn-simulate-approve" onclick="simulateUpiApproval()">
+                            ✓ Simulate UPI Payment Approval
+                        </button>
+                    </div>
+                </div>
+
+                <!-- COD Details Container -->
+                <div id="payment-cod-panel" style="display: none; background: var(--bg-main); padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; border: 1px solid var(--border-light);">
+                    <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+                        💵 Pay conveniently in cash or via QR at your doorstep upon delivery. Please have exact change ready.
+                    </p>
+                </div>
+
+                <button type="submit" id="place-order-btn" class="btn-primary" style="width: 100%; padding: 1.1rem; font-size: 0.95rem;">
+                    🔒 Place Atelier Order
+                </button>
+            </form>
+
+            <p id="message" style="margin-top: 1rem; font-size: 0.9rem;"></p>
+        </div>
+
+        <!-- Order Summary Right Column -->
+        <div class="cart-summary-card">
+            <h3 style="font-size: 1.4rem; margin-bottom: 1.2rem;">Order Summary</h3>
+
+            <div id="checkout-items-list" style="max-height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; padding-right: 0.5rem;">
+                <!-- Filled dynamically -->
+            </div>
+
+            <!-- Promo Code / Dynamic Multi-Coupon Box -->
+            <div style="margin-bottom: 1.2rem; padding: 1rem; background: var(--bg-main); border: 1px solid var(--border-medium); border-radius: var(--radius-xs);">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem;">
+                    <span style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-primary); display: flex; align-items: center; gap: 0.35rem;">
+                        🎟️ <span>Atelier Offers & Vouchers</span>
+                    </span>
+                    <span id="coupon-active-status" style="display: none; font-size: 0.74rem; font-weight: 700; color: #15803d; background: #dcfce7; padding: 0.15rem 0.5rem; border-radius: 4px;">
+                        ✓ Applied
+                    </span>
+                </div>
+
+                <!-- Manual Promo Code Entry -->
+                <div style="display: flex; gap: 0.45rem; margin-bottom: 0.6rem;">
+                    <input type="text" id="coupon-code-input" placeholder="Enter coupon code (e.g. DIWALI25)" style="flex: 1; padding: 0.6rem 0.75rem; font-size: 0.84rem; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid var(--border-medium); border-radius: var(--radius-xs); background: #ffffff;">
+                    <button type="button" id="btn-apply-coupon" onclick="applyCouponCode()" class="btn-secondary" style="padding: 0.6rem 1rem; font-size: 0.8rem; font-weight: 700; white-space: nowrap;">
+                        Apply
+                    </button>
+                </div>
+                <div id="coupon-feedback" style="font-size: 0.78rem; margin-bottom: 0.75rem; display: none;"></div>
+
+                <!-- Multiple Clickable Coupons Deck for Shopping -->
+                <div id="checkout-coupons-wrapper" style="border-top: 1px dashed var(--border-medium); padding-top: 0.75rem;">
+                    <div class="coupon-deck-header">
+                        <span>✨ Select a Coupon to Apply:</span>
+                        <span id="coupons-counter-badge" style="font-size: 0.72rem; color: var(--accent-gold); font-weight: 700;">Offers available</span>
+                    </div>
+                    <div id="available-coupons-deck" class="coupon-deck-container">
+                        <!-- Populated dynamically by checkout.js -->
+                        <div style="font-size: 0.75rem; color: var(--text-muted); text-align: center; padding: 0.8rem;">Loading luxury offers...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <strong id="checkout-subtotal">₹0</strong>
+            </div>
+
+            <div class="summary-row" id="checkout-discount-row" style="display: none; color: var(--accent-emerald);">
+                <span>Voucher Discount</span>
+                <strong id="checkout-discount">-₹0</strong>
+            </div>
+
+            <div class="summary-row">
+                <span>Delivery</span>
+                <span id="checkout-shipping" style="color: var(--accent-emerald); font-weight: 600;">Complimentary</span>
+            </div>
+
+            <div class="summary-row total">
+                <span>Total Amount</span>
+                <span id="checkout-total">₹0</span>
+            </div>
+
+            <div style="margin-top: 2rem; padding: 1rem; background: var(--bg-main); border-radius: var(--radius-xs); border: 1px solid var(--border-light); font-size: 0.8rem; color: var(--text-secondary);">
+                <strong style="color: var(--text-primary); display: block; margin-bottom: 0.2rem;">Authenticity & Quality Guarantee</strong>
+                Every garment is meticulously inspected before dispatch and protected in biodegradable packaging.
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Incoming SMS Push Banner Simulator -->
+    <div id="sms-push-banner" class="sms-push-banner">
+        <div class="sms-push-icon">💬</div>
+        <div class="sms-push-content">
+            <div class="sms-push-top">
+                <span>MESSAGES • JUST NOW</span>
+                <span class="sms-push-phone" id="sms-push-phone">+91 ••••• •••••</span>
+            </div>
+            <div class="sms-push-text" id="sms-push-text">
+                StyleHub Atelier: Order is successfully placed!
+            </div>
+        </div>
+        <button type="button" class="sms-push-close" onclick="closeSmsBanner()" title="Dismiss">✕</button>
+    </div>
+
+    <!-- Order Success Modal -->
+    <div id="order-success-modal" class="modal-backdrop">
+        <div class="modal-box" style="max-width: 550px; text-align: center; padding: 3rem 2.2rem;">
+            <div style="font-size: 3.2rem; margin-bottom: 0.8rem;">🎉</div>
+            <span class="hero-tag">ORDER CONFIRMED</span>
+            <h2 style="font-size: 2.1rem; margin-bottom: 0.5rem;">Thank You For Your Order</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.3rem; line-height: 1.5; font-size: 0.92rem;">
+                Your order has been recorded in our atelier database and confirmation is sent to your mobile.
+            </p>
+
+            <div style="background: var(--bg-main); border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 1.1rem 1.2rem; text-align: left; margin-bottom: 1.2rem; font-size: 0.88rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                    <span style="color: var(--text-muted);">Order Number:</span>
+                    <strong id="modal-order-id">#SH-2026-9042</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                    <span style="color: var(--text-muted);">Estimated Delivery:</span>
+                    <strong id="modal-delivery-date">3-4 Business Days</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Total Paid:</span>
+                    <strong id="modal-order-total" style="color: var(--accent-gold); font-size: 1rem;">₹0</strong>
+                </div>
+            </div>
+
+            <!-- Registered Mobile SMS Alert Card -->
+            <div class="modal-mobile-alert">
+                <div class="modal-mobile-header">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 1.25rem;">📱</span>
+                        <div>
+                            <strong style="color: #1b5e20; font-size: 0.88rem; display: block; line-height: 1.2;">Message Sent to Registered Mobile</strong>
+                            <span style="font-size: 0.8rem; color: var(--text-secondary);">Phone: <strong id="modal-registered-phone" style="color: var(--text-primary);">+91 9876543210</strong></span>
+                        </div>
+                    </div>
+                    <span class="modal-mobile-badge">
+                        <span class="sms-live-pulse"></span>
+                        <span>SMS SENT</span>
+                    </span>
+                </div>
+
+                <!-- Simulated Verified SMS Bubble -->
+                <div class="sms-preview-card">
+                    <div class="sms-preview-top">
+                        <span>💬 SMS • StyleHub Atelier</span>
+                        <span id="modal-sms-time">Just Now</span>
+                    </div>
+                    <div class="sms-preview-body" id="modal-sms-message-text">
+                        StyleHub Atelier: Order <strong id="modal-sms-order-id">#SH-2026-9042</strong> of <strong id="modal-sms-order-total">₹0</strong> is successfully placed! Thank you for shopping with us.
+                    </div>
+                </div>
+
+                <!-- WhatsApp & SMS Actions -->
+                <div class="sms-action-row">
+                    <a id="modal-whatsapp-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-order">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                        View on WhatsApp
+                    </a>
+                    <button type="button" class="btn-resend-sms" onclick="resendOrderSMS()">
+                        🔄 Resend SMS
+                    </button>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                <button type="button" class="btn-primary" onclick="openPrintableInvoiceModal()" style="width: 100%;">
+                    🧾 Download / Print Official Invoice
+                </button>
+                <div style="display: flex; gap: 0.8rem;">
+                    <a href="profile.html" class="btn-secondary" style="flex: 1; text-align: center;">
+                        Track Order in Profile ↗
+                    </a>
+                    <a href="index.html" class="btn-secondary" style="flex: 1; text-align: center;">
+                        Continue Shopping
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Luxury Printable Invoice Modal -->
+    <div class="invoice-modal-overlay" id="checkout-invoice-modal">
+        <div class="invoice-paper">
+            <div class="invoice-top-bar">
+                <div class="invoice-brand">
+                    <h2>StyleHub Atelier .</h2>
+                    <p style="font-size: 0.8rem; color: #666666; letter-spacing: 0.05em;">HAUTE COUTURE & READY-TO-WEAR</p>
+                </div>
+                <div class="invoice-meta-right">
+                    <p><strong id="chk-inv-id">#SH-2026-0000</strong></p>
+                    <p id="chk-inv-date">Date: September 12, 2026</p>
+                    <p style="color: #2e7d32; font-weight: 600;">Status: Paid & Verified</p>
+                </div>
+            </div>
+
+            <div class="invoice-addresses-grid">
+                <div>
+                    <h4 style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: #888888; margin-bottom: 0.4rem;">Billed & Delivered To</h4>
+                    <p><strong id="chk-inv-name">Customer Name</strong></p>
+                    <p id="chk-inv-address">123 Atelier Street</p>
+                    <p id="chk-inv-phone">+91 00000 00000</p>
+                    <p id="chk-inv-email">customer@example.com</p>
+                </div>
+                <div style="text-align: right;">
+                    <h4 style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: #888888; margin-bottom: 0.4rem;">Atelier Details</h4>
+                    <p><strong>StyleHub Atelier Flagship</strong></p>
+                    <p>Bandra West, Mumbai 400050</p>
+                    <p>support@stylehub.atelier</p>
+                    <p>GSTIN: 27AABCS1429B1Z8</p>
+                </div>
+            </div>
+
+            <table class="invoice-items-table">
+                <thead>
+                    <tr>
+                        <th>Item Description</th>
+                        <th style="text-align: center;">Qty</th>
+                        <th style="text-align: right;">Price</th>
+                        <th style="text-align: right;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="chk-inv-items-body">
+                    <!-- Items -->
+                </tbody>
+            </table>
+
+            <div class="invoice-totals-area">
+                <div class="invoice-totals-box">
+                    <div class="invoice-total-row">
+                        <span>Subtotal:</span>
+                        <strong id="chk-inv-subtotal">₹0</strong>
+                    </div>
+                    <div class="invoice-total-row">
+                        <span>Delivery:</span>
+                        <span style="color: #2e7d32;">Complimentary Express</span>
+                    </div>
+                    <div class="invoice-total-row grand-total">
+                        <span>Grand Total:</span>
+                        <strong id="chk-inv-total">₹0</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div style="font-size: 0.76rem; color: #888888; border-top: 1px solid #eeeeee; padding-top: 1rem; line-height: 1.5;">
+                Thank you for selecting StyleHub Atelier. Every piece is handcrafted with uncompromising dedication to quality and timeless aesthetics.
+            </div>
+
+            <div class="invoice-actions-bar">
+                <button type="button" class="btn-secondary" onclick="closePrintableInvoiceModal()" style="padding: 0.6rem 1.2rem; font-size: 0.85rem;">Close</button>
+                <button type="button" class="btn-primary" onclick="window.print()" style="padding: 0.6rem 1.4rem; font-size: 0.85rem;">🖨️ Print / Save PDF</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Luxury Footer -->
+    <footer class="site-footer">
+        <div class="footer-bottom" style="margin-top: 0; justify-content: center;">
+            <p>© 2026 StyleHub Atelier Inc. Safe & Secure Payment Checkout.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/checkout.js"></script>
+</body>
+</html>

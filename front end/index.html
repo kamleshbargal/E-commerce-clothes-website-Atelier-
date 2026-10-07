@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleHub Haute Atelier - Curated Everyday Luxury</title>
+    <meta name="description" content="StyleHub Haute Atelier - Exclusive curated luxury clothes, dresses, coats, evening gowns, jackets, and everyday fashion online in India by Kamlesh Bargal.">
+    <meta name="keywords" content="StyleHub Atelier, clothes website, stylehub fashion, luxury dresses, online clothes store India, Kamlesh Bargal">
+    <meta name="author" content="Kamlesh Bargal">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="StyleHub Haute Atelier - Curated Everyday Luxury">
+    <meta property="og:description" content="Shop curated luxury dresses and everyday designer clothes online.">
+    <meta property="og:url" content="https://clothes-website-atelier.onrender.com">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://clothes-website-atelier.onrender.com/">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+
+    <!-- Top Announcement Marquee Ticker -->
+    <aside class="announcement-bar" aria-label="Store Announcements">
+        <div class="marquee-content">
+            <div class="marquee-item">
+                <span>✨ COMPLIMENTARY EXPRESS DELIVERY OVER ₹1,999</span>
+                <span class="highlight">•</span>
+                <span>SPRING/SUMMER 2026 ATELIER DROP LIVE</span>
+                <span class="highlight">•</span>
+                <span>USE CODE <strong class="highlight">ATELIER15</strong> FOR 15% OFF YOUR ORDER</span>
+                <span class="highlight">•</span>
+                <span>7-DAY DOORSTEP TRY-ON & EASY EXCHANGES</span>
+                <span class="highlight">•</span>
+                <span>100% ETHICAL & SUSTAINABLE FIBERS</span>
+            </div>
+            <div class="marquee-item" aria-hidden="true">
+                <span>✨ COMPLIMENTARY EXPRESS DELIVERY OVER ₹1,999</span>
+                <span class="highlight">•</span>
+                <span>SPRING/SUMMER 2026 ATELIER DROP LIVE</span>
+                <span class="highlight">•</span>
+                <span>USE CODE <strong class="highlight">ATELIER15</strong> FOR 15% OFF YOUR ORDER</span>
+                <span class="highlight">•</span>
+                <span>7-DAY DOORSTEP TRY-ON & EASY EXCHANGES</span>
+                <span class="highlight">•</span>
+                <span>100% ETHICAL & SUSTAINABLE FIBERS</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Sticky Luxury Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo-wrap">
+                <a class="logo" href="index.html">StyleHub <span>.</span></a>
+                <span class="logo-tag">Atelier</span>
+            </div>
+
+            <nav class="nav-desktop" aria-label="Main Navigation">
+                <a class="nav-link active" href="index.html">Collection</a>
+                <a class="nav-link" href="#categories">Categories</a>
+                <a class="nav-link" href="#outfit-bundle">Style The Look</a>
+                <a class="nav-link" href="product.html">Catalog</a>
+                <a class="nav-link" href="track.html">Track Order</a>
+                <a class="nav-link" href="#reviews">Atelier Journal</a>
+            </nav>
+
+            <div class="header-actions">
+                <a href="login.html" id="header-user-btn" class="icon-btn" title="Account / Profile" aria-label="Account">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+                
+                <button type="button" class="icon-btn" onclick="openCartDrawer()" title="Wishlist & Bag" aria-label="Shopping Bag">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                        <path d="M3 6h18"></path>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span class="badge-count cart-count-badge">0</span>
+                </button>
+
+                <button type="button" class="mobile-menu-toggle icon-btn" aria-label="Toggle menu">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Interactive Hero Lookbook Slider -->
+        <section class="hero-slider-section" aria-label="Hero Lookbook">
+            <div class="hero-slider-track" id="hero-slider-track">
+                <!-- Slide 1 -->
+                <div class="hero-slide hero-slide-1">
+                    <div class="hero-content">
+                        <span class="hero-tag">Spring / Summer 2026 Drop</span>
+                        <h1 class="hero-title">Clothes that make the ordinary feel <em>considered.</em></h1>
+                        <p class="hero-desc">Clean silhouettes, breathable Italian organic linen, and sculpted cuts made to move effortlessly with your week.</p>
+                        <div class="hero-buttons">
+                            <a class="btn-primary" href="#collection">Explore Collection <span>→</span></a>
+                            <a class="btn-secondary btn-secondary-light" href="#outfit-bundle">View Lookbook</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="hero-slide hero-slide-2">
+                    <div class="hero-content">
+                        <span class="hero-tag">The Cashmere Atelier</span>
+                        <h1 class="hero-title">Warmth redefined in <em>sculptural</em> wool.</h1>
+                        <p class="hero-desc">Hand-loomed double-faced overcoats and ultra-fine Mongolian cashmere designed for timeless seasonal warmth.</p>
+                        <div class="hero-buttons">
+                            <a class="btn-primary" href="#collection">Shop Knitwear <span>→</span></a>
+                            <a class="btn-secondary btn-secondary-light" href="product.html">Browse All</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="hero-slide hero-slide-3">
+                    <div class="hero-content">
+                        <span class="hero-tag">Contemporary Couple Edit</span>
+                        <h1 class="hero-title">Curated pieces for plans <em>made together.</em></h1>
+                        <p class="hero-desc">Elevated everyday denim, artisanal footwear, and minimal jewellery designed for modern couple styling.</p>
+                        <div class="hero-buttons">
+                            <a class="btn-primary" href="#collection">Explore Couple Edit <span>→</span></a>
+                            <button type="button" class="btn-secondary btn-secondary-light" onclick="addFullOutfitBundle()">Quick Add Outfit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slider Navigation Controls -->
+            <div class="hero-slider-arrows">
+                <button type="button" class="slider-arrow-btn" onclick="changeHeroSlide(-1)" aria-label="Previous Slide">‹</button>
+                <button type="button" class="slider-arrow-btn" onclick="changeHeroSlide(1)" aria-label="Next Slide">›</button>
+            </div>
+            <div class="hero-slider-dots" id="hero-slider-dots"></div>
+        </section>
+
+        <!-- Trust Pillars Strip -->
+        <section class="perks-strip" aria-label="Why Shop With Us">
+            <div class="perks-grid">
+                <div class="perk-item">
+                    <div class="perk-icon-wrap">🌿</div>
+                    <div class="perk-text">
+                        <h4>Organic & Sustainable</h4>
+                        <p>100% GOTS certified cotton, linen & traceable wool fibers.</p>
+                    </div>
+                </div>
+                <div class="perk-item">
+                    <div class="perk-icon-wrap">⚡</div>
+                    <div class="perk-text">
+                        <h4>Complimentary Express</h4>
+                        <p>Free tracked insured doorstep delivery on orders over ₹1,999.</p>
+                    </div>
+                </div>
+                <div class="perk-item">
+                    <div class="perk-icon-wrap">🔄</div>
+                    <div class="perk-text">
+                        <h4>7-Day Try at Home</h4>
+                        <p>Effortless exchanges & returns with instant doorstep pickup.</p>
+                    </div>
+                </div>
+                <div class="perk-item">
+                    <div class="perk-icon-wrap">💎</div>
+                    <div class="perk-text">
+                        <h4>Master Tailoring</h4>
+                        <p>Hand-finished seams, reinforced stitches & custom fit guarantees.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Curated Category Tiles -->
+        <section class="categories-section" id="categories" aria-label="Curated Categories">
+            <div class="section-header">
+                <p class="section-subtitle">DISCOVER BY ATELIER</p>
+                <h2 class="section-title">Curated Portfolios</h2>
+                <p class="section-desc">Each garment is conceived as a harmonious essential, built to pair seamlessly with the rest of your wardrobe.</p>
+            </div>
+
+            <div class="category-tiles-grid">
+                <div class="category-tile" onclick="filterByCategory('Men')">
+                    <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=900&q=85" alt="Men's Haute Atelier">
+                    <div class="category-tile-overlay">
+                        <h3>Men's Collection</h3>
+                        <p>Structured jackets, relaxed linen & tailoring <span>→</span></p>
+                    </div>
+                </div>
+                <div class="category-tile" onclick="filterByCategory('Women')">
+                    <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=900&q=85" alt="Women's Haute Atelier">
+                    <div class="category-tile-overlay">
+                        <h3>Women's Edit</h3>
+                        <p>Silk maxis, knit cardigans & fine silhouettes <span>→</span></p>
+                    </div>
+                </div>
+                <div class="category-tile" onclick="filterByCategory('Kids')">
+                    <img src="https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=900&q=85" alt="Kids & Little Atelier">
+                    <div class="category-tile-overlay">
+                        <h3>Kids & Little Atelier</h3>
+                        <p>Festive couture, organic loungewear & party frocks <span>→</span></p>
+                    </div>
+                </div>
+                <div class="category-tile" onclick="filterByCategory('Footwear')">
+                    <img src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=900&q=85" alt="Footwear & Jewellery">
+                    <div class="category-tile-overlay">
+                        <h3>Footwear & Accents</h3>
+                        <p>Italian calfskin sneakers & 18K vermeil jewellery <span>→</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Editorial Banners -->
+        <section class="editorial-banners" aria-label="Editorial Campaigns">
+            <article class="editorial-banner-card banner-card-men">
+                <div class="editorial-banner-content">
+                    <span class="editorial-badge">WEEKEND EDIT</span>
+                    <h2>Structured Ease for Men</h2>
+                    <p>Subtle neutral tones, Japanese selvedge denim, and versatile overshirts tailored for effortless Saturdays.</p>
+                    <a href="#collection" class="btn-primary">Shop Men's Edit <span>→</span></a>
+                </div>
+            </article>
+
+            <article class="editorial-banner-card banner-card-women">
+                <div class="editorial-banner-content">
+                    <span class="editorial-badge">STYLE TOGETHER</span>
+                    <h2>The Feminine Silhouette</h2>
+                    <p>Flowing pleated silks and tactile chunky knits curated for relaxed afternoons and evening dinners.</p>
+                    <a href="#collection" class="btn-primary">Shop Women's Edit <span>→</span></a>
+                </div>
+            </article>
+        </section>
+
+        <!-- Main Curated Collection Catalog Section -->
+        <section class="collection-section" id="collection" aria-label="Curated Collection">
+            <div class="section-header">
+                <p class="section-subtitle">HANDPICKED PIECES</p>
+                <h2 class="section-title">The Spring Atelier Collection</h2>
+                <p class="section-desc">Discover our newest arrivals crafted for texture, durability, and timeless presence.</p>
+            </div>
+
+            <!-- Filter & Search Toolbar -->
+            <div class="filter-toolbar">
+                <div class="filter-row-top">
+                    <div class="category-pills">
+                        <button type="button" class="filter-pill active" data-category="All">All Pieces</button>
+                        <button type="button" class="filter-pill" data-category="Men">Men</button>
+                        <button type="button" class="filter-pill" data-category="Women">Women</button>
+                        <button type="button" class="filter-pill" data-category="Unisex">Unisex</button>
+                        <button type="button" class="filter-pill" data-category="Footwear">Footwear</button>
+                        <button type="button" class="filter-pill" data-category="Jewellery">Jewellery</button>
+                        <button type="button" class="filter-pill" data-category="Kids">Kids</button>
+                    </div>
+
+                    <div class="filter-selects-group">
+                        <div class="custom-select-wrap">
+                            <select id="sort-select" aria-label="Sort Collection">
+                                <option value="featured">Sort by: Featured</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="rating">Highest Rated ★</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-row-bottom">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input id="product-search" type="search" placeholder="Search by name, fabric, or category..." autocomplete="off">
+                        <button type="button" id="clear-search-btn" class="clear-search-btn" title="Clear search">✕</button>
+                    </div>
+
+                    <p id="search-status" class="catalog-status-bar" aria-live="polite">Loading curated pieces...</p>
+                </div>
+            </div>
+
+            <!-- Products Grid Container -->
+            <div id="products-container" class="product-grid"></div>
+        </section>
+
+        <!-- "Style The Look" Curated Outfit Bundle -->
+        <section class="curated-outfit-section" id="outfit-bundle" aria-label="Curated Outfit Bundle">
+            <div class="curated-outfit-container">
+                <div class="outfit-bundle-card">
+                    <div class="outfit-main-image">
+                        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1000&q=85" alt="The Weekend Minimalist Look">
+                    </div>
+                    <div class="outfit-bundle-info">
+                        <span class="hero-tag">ATELIER STYLING</span>
+                        <h2>The Signature Weekend Ensemble</h2>
+                        <p>Our stylists have paired three iconic essentials together for a complete, cohesive look. Enjoy 20% off when acquired as a complete bundle.</p>
+                        
+                        <div class="outfit-items-list">
+                            <div class="outfit-item-row">
+                                <div class="outfit-item-left">
+                                    <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=200&q=80" alt="Cashmere Knit">
+                                    <div>
+                                        <p class="outfit-item-name">Artisanal Cashmere Knit Sweater</p>
+                                        <span class="outfit-item-cat">Knitwear • Size M</span>
+                                    </div>
+                                </div>
+                                <strong>₹2,499</strong>
+                            </div>
+
+                            <div class="outfit-item-row">
+                                <div class="outfit-item-left">
+                                    <img src="https://images.unsplash.com/photo-1495105787522-5334e3ffa0ef?auto=format&fit=crop&w=200&q=80" alt="Denim Jacket">
+                                    <div>
+                                        <p class="outfit-item-name">Structured Minimalist Denim Jacket</p>
+                                        <span class="outfit-item-cat">Outerwear • Size L</span>
+                                    </div>
+                                </div>
+                                <strong>₹2,899</strong>
+                            </div>
+
+                            <div class="outfit-item-row">
+                                <div class="outfit-item-left">
+                                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&q=80" alt="Italian Sneakers">
+                                    <div>
+                                        <p class="outfit-item-name">City Low-Top Italian Leather Sneakers</p>
+                                        <span class="outfit-item-cat">Footwear • Size 42</span>
+                                    </div>
+                                </div>
+                                <strong>₹3,499</strong>
+                            </div>
+                        </div>
+
+                        <div class="outfit-pricing-action">
+                            <div>
+                                <span style="font-size: 0.85rem; color: var(--text-muted); text-decoration: line-through;">Regular ₹8,897</span>
+                                <div style="font-size: 1.6rem; font-weight: 700; color: var(--text-primary);">
+                                    Bundle Price: ₹7,118 <span style="font-size: 0.8rem; color: var(--accent-emerald); font-weight: 600;">(Save ₹1,779)</span>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-primary" onclick="addFullOutfitBundle()">
+                                ✨ Add Complete Look to Bag
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials & Reviews -->
+        <section class="testimonials-section" id="reviews" aria-label="Customer Reviews">
+            <div class="section-header">
+                <p class="section-subtitle">VOICES OF CONNOISSEURS</p>
+                <h2 class="section-title">Worn Often, Loved Truly</h2>
+                <p class="section-desc">Hear how our community incorporates StyleHub atelier garments into their everyday lives.</p>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div>
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-quote">"The cashmere knit sweater is extraordinary. The texture is cloud-like, and after a dozen wears it retains its structure flawlessly. StyleHub is in a league of its own."</p>
+                    </div>
+                    <div class="testimonial-user">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Aanya Sharma" class="testimonial-avatar">
+                        <div class="testimonial-meta">
+                            <h5>Aanya Sharma</h5>
+                            <span>Verified Atelier Buyer • Mumbai</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div>
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-quote">"The selvedge denim jacket has a tailored drape you rarely see off the rack. Arrived in 2 days in plastic-free luxury packaging. Truly impressed."</p>
+                    </div>
+                    <div class="testimonial-user">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Vikram Malhotra" class="testimonial-avatar">
+                        <div class="testimonial-meta">
+                            <h5>Vikram Malhotra</h5>
+                            <span>Architect • Bengaluru</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div>
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-quote">"Ordered the silk summer maxi dress and freshwater pearl earrings for an evening event. Received compliments all night. The fabric feels sublime against the skin."</p>
+                    </div>
+                    <div class="testimonial-user">
+                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" alt="Rhea Sen" class="testimonial-avatar">
+                        <div class="testimonial-meta">
+                            <h5>Rhea Sen</h5>
+                            <span>Creative Director • New Delhi</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter / VIP Club -->
+        <section class="newsletter-section" aria-label="Join VIP Club">
+            <div class="newsletter-content">
+                <span class="hero-tag">ATELIER PRIVILEGE</span>
+                <h2>Join the Style Atelier</h2>
+                <p>Subscribe to receive private seasonal drop previews, curated styling notes, and an immediate 15% voucher for your next order.</p>
+                <form id="vip-newsletter-form" class="newsletter-form">
+                    <input type="email" placeholder="Enter your email address..." required aria-label="Email Address">
+                    <button type="submit" class="btn-primary">Claim 15% Off</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Slide-Over Cart Drawer -->
+    <div id="cart-drawer-backdrop" class="cart-drawer-backdrop"></div>
+    <aside id="cart-drawer" class="cart-drawer" aria-label="Shopping Bag">
+        <div class="cart-drawer-header">
+            <h3>Your Shopping Bag</h3>
+            <button type="button" class="drawer-close-btn" onclick="closeCartDrawer()" aria-label="Close Bag">✕</button>
+        </div>
+
+        <div class="free-shipping-bar-wrap">
+            <p id="free-shipping-text" class="free-shipping-text">Add items for complimentary delivery.</p>
+            <div class="free-shipping-progress-bg">
+                <div id="free-shipping-fill" class="free-shipping-progress-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <div id="cart-drawer-items" class="cart-drawer-items"></div>
+
+        <div class="cart-drawer-footer">
+            <div class="promo-code-box">
+                <input type="text" id="promo-input" placeholder="Promo code (e.g. ATELIER15)">
+                <button type="button" id="apply-promo-btn" class="btn-secondary" style="padding: 0.6rem 1rem;">Apply</button>
+            </div>
+
+            <div class="drawer-subtotal-row">
+                <span>Estimated Total:</span>
+                <span id="drawer-subtotal">₹0</span>
+            </div>
+
+            <div class="drawer-actions">
+                <a href="checkout.html" class="btn-primary" style="text-align: center;">Proceed to Checkout <span>→</span></a>
+                <a href="cart.html" class="btn-secondary" style="text-align: center;">View Detailed Bag</a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Quick View Modal -->
+    <div id="quick-view-modal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal-box">
+            <button type="button" class="modal-close-btn" onclick="closeQuickView()" aria-label="Close Preview">✕</button>
+            <div class="quick-view-grid">
+                <div class="quick-view-image">
+                    <img src="" alt="Product Preview">
+                </div>
+                <div class="quick-view-info">
+                    <span class="product-category-sub">Category</span>
+                    <h2>Product Title</h2>
+                    <div class="price-wrap" style="margin-bottom: 1.2rem;">
+                        <span class="current-price" style="font-size: 1.5rem;">₹0</span>
+                        <span class="original-price" style="font-size: 1.1rem;">₹0</span>
+                    </div>
+                    <p class="quick-view-desc" style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">
+                        Product description goes here.
+                    </p>
+                    
+                    <div class="size-selector">
+                        <div class="size-title">
+                            <span>Select Your Size:</span>
+                            <a href="javascript:void(0)" onclick="openSizeGuide()" style="font-size: 0.75rem; text-decoration: underline; color: var(--accent-gold); cursor: pointer;">📏 Size Guide</a>
+                        </div>
+                        <div class="size-options"></div>
+                    </div>
+
+                    <div style="display: flex; gap: 0.75rem; margin-top: 2rem; flex-wrap: wrap;">
+                        <button type="button" class="btn-primary" style="flex: 1; min-width: 140px;" onclick="addQuickViewToBag()">
+                            Add to Bag • 🛍️
+                        </button>
+                        <button type="button" class="btn-secondary" style="flex: 1; min-width: 160px; background: #075e54; color: #fff; border-color: #128c7e; display: flex; align-items: center; justify-content: center; gap: 0.4rem;" onclick="orderQuickViewOnWhatsApp()">
+                            <span>💬</span> Order on WhatsApp
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Size Chart Guide Modal -->
+    <div id="size-guide-modal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal-box" style="max-width: 640px; padding: 2.2rem;">
+            <button type="button" class="modal-close-btn" onclick="closeSizeGuide()" aria-label="Close Size Guide">✕</button>
+            <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.5rem;">
+                <span style="font-size: 1.6rem;">📏</span>
+                <div>
+                    <h3 style="font-family: var(--font-serif); font-size: 1.35rem; margin: 0; color: var(--text-primary);">Atelier Size & Measurement Guide</h3>
+                    <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">All measurements in inches. Designed with true-to-tailor luxury proportions.</p>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 0.6rem; margin: 1.4rem 0 1rem 0; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem;">
+                <button type="button" id="btn-size-men" class="size-tab-btn active" onclick="switchSizeTab('men')">👔 Men's Tailoring</button>
+                <button type="button" id="btn-size-women" class="size-tab-btn" onclick="switchSizeTab('women')">👗 Women's Silhouette</button>
+            </div>
+
+            <!-- Men's Table -->
+            <div id="size-table-men" style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.86rem; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color); color: var(--accent-gold);">
+                            <th style="padding: 0.6rem 0.8rem;">Size</th>
+                            <th style="padding: 0.6rem 0.8rem;">Chest (in)</th>
+                            <th style="padding: 0.6rem 0.8rem;">Waist (in)</th>
+                            <th style="padding: 0.6rem 0.8rem;">Shoulder (in)</th>
+                            <th style="padding: 0.6rem 0.8rem;">Length (in)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 0.6rem 0.8rem; font-weight: 600;">S</td><td style="padding: 0.6rem 0.8rem;">36 - 38</td><td style="padding: 0.6rem 0.8rem;">30 - 32</td><td style="padding: 0.6rem 0.8rem;">17.5</td><td style="padding: 0.6rem 0.8rem;">28.0</td></tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 0.6rem 0.8rem; font-weight: 600;">M</td><td style="padding: 0.6rem 0.8rem;">38 - 40</td><td style="padding: 0.6rem 0.8rem;">32 - 34</td><td style="padding: 0.6rem 0.8rem;">18.0</td><td style="padding: 0.6rem 0.8rem;">29.0</td></tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 0.6rem 0.8rem; font-weight: 600;">L</td><td style="padding: 0.6rem 0.8rem;">40 - 42</td><td style="padding: 0.6rem 0.8rem;">34 - 36</td><td style="padding: 0.6rem 0.8rem;">18.5</td><td style="padding: 0.6rem 0.8rem;">30.0</td></tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 0.6rem 0.8rem; font-weight: 600;">XL</td><td style="padding: 0.6rem 0.8rem;">42 - 44</td><td style="padding: 0.6rem 0.8rem;">36 - 38</td><td style="padding: 0.6rem 0.8rem;">19.2</td><td style="padding: 0.6rem 0.8rem;">31.0</td></tr>
+                        <tr><td style="padding: 0.6rem 0.8rem; font-weight: 600;">XXL</td><td style="padding: 0.6rem 0.8rem;">44 - 46</td><td style="padding: 0.6rem 0.8rem;">38 - 40</td><td style="padding: 0.6rem 0.8rem;">20.0</td><td style="padding: 0.6rem 0.8rem;">31.5</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Women's Table -->
+            <div id="size-table-women" style="display: none; overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.86rem; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color); color: var(--accent-gold);">
+                            <th style="padding: 0.6rem 0.8rem;">Size</th>
+                            <th style="padding: 0.6rem 0.8rem;">Bust (in)</th>
+                            <th style="padding: 0.6rem 0.8rem;">Waist (in)</th>
+                            <th style="padding: 0.6rem 0.8rem;">Hip (in)</th>
+                            <th style="padding: 0.6rem 0.8rem;">Length (in)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 0.6rem 0.8rem; font-weight: 600;">XS</td><td style="padding: 0.6rem 0.8rem;">32</td><td style="padding: 0.6rem 0.8rem;">26</td><td style="padding: 0.6rem 0.8rem;">35</td><td style="padding: 0.6rem 0.8rem;">38.0</td></tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 0.6rem 0.8rem; font-weight: 600;">S</td><td style="padding: 0.6rem 0.8rem;">34</td><td style="padding: 0.6rem 0.8rem;">28</td><td style="padding: 0.6rem 0.8rem;">37</td><td style="padding: 0.6rem 0.8rem;">39.0</td></tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 0.6rem 0.8rem; font-weight: 600;">M</td><td style="padding: 0.6rem 0.8rem;">36</td><td style="padding: 0.6rem 0.8rem;">30</td><td style="padding: 0.6rem 0.8rem;">39</td><td style="padding: 0.6rem 0.8rem;">40.0</td></tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 0.6rem 0.8rem; font-weight: 600;">L</td><td style="padding: 0.6rem 0.8rem;">38</td><td style="padding: 0.6rem 0.8rem;">32</td><td style="padding: 0.6rem 0.8rem;">41</td><td style="padding: 0.6rem 0.8rem;">41.0</td></tr>
+                        <tr><td style="padding: 0.6rem 0.8rem; font-weight: 600;">XL</td><td style="padding: 0.6rem 0.8rem;">40</td><td style="padding: 0.6rem 0.8rem;">34</td><td style="padding: 0.6rem 0.8rem;">43</td><td style="padding: 0.6rem 0.8rem;">42.0</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 1.4rem; padding: 0.9rem 1.1rem; background: rgba(212, 175, 55, 0.08); border-radius: 8px; border-left: 3px solid var(--accent-gold); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem;">
+                <span style="font-size: 0.82rem; color: var(--text-secondary);">Need a bespoke fitting or custom alteration?</span>
+                <a href="https://wa.me/919209962961?text=Hello%20StyleHub%20Atelier!%20I%20need%20assistance%20with%20custom%20garment%20sizing" target="_blank" rel="noopener noreferrer" style="font-size: 0.82rem; font-weight: 600; color: #25D366; text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem;">
+                    <span>💬</span> Talk to Master Tailor
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Luxury Footer -->
+    <footer class="site-footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <h3>StyleHub .</h3>
+                <p>Everyday style, thoughtfully chosen. Crafted with uncompromising attention to tailoring, ethical fabrics, and quiet luxury.</p>
+                <div style="display: flex; gap: 0.8rem; font-size: 1.2rem; margin-top: 1.2rem;">
+                    <span style="cursor: pointer;">✦</span>
+                    <span style="cursor: pointer;">◈</span>
+                    <span style="cursor: pointer;">◉</span>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Collections</h4>
+                <ul class="footer-links">
+                    <li><a href="#collection">New Arrivals</a></li>
+                    <li><a href="#collection">Men's Atelier</a></li>
+                    <li><a href="#collection">Women's Edit</a></li>
+                    <li><a href="#collection">Knitwear & Coats</a></li>
+                    <li><a href="#collection">Footwear & Accents</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Customer & Portal</h4>
+                <ul class="footer-links">
+                    <li><a href="track.html">Track Order</a></li>
+                    <li><a href="cart.html">Shopping Bag</a></li>
+                    <li><a href="checkout.html">Checkout</a></li>
+                    <li><a href="login.html">Customer Sign In</a></li>
+                    <li><a href="admin-login.html" style="color: var(--accent-gold);">👑 Admin Panel 🔒</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Our Philosophy</h4>
+                <p style="color: #9ba4ab; font-size: 0.86rem; line-height: 1.6;">
+                    "We believe clothing should feel like a natural extension of yourself. Durable pieces, worn often, treasured longer."
+                </p>
+                <div style="margin-top: 1.2rem; font-size: 0.78rem; color: var(--accent-gold);">
+                    📍 Crafted with care • Mumbai, India
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 StyleHub Atelier Inc. All rights reserved.</p>
+            <div style="display: flex; gap: 1.5rem;">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="admin-login.html" style="color: var(--accent-gold);">👑 Admin Panel 🔒</a>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/products.js"></script>
+</body>
+</html>

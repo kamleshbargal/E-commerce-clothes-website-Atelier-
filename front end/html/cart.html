@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Bag - StyleHub Haute Atelier</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo-wrap">
+                <a class="logo" href="index.html">StyleHub <span>.</span></a>
+                <span class="logo-tag">Atelier</span>
+            </div>
+
+            <nav class="nav-desktop">
+                <a class="nav-link" href="index.html">Home</a>
+                <a class="nav-link" href="product.html">Catalog</a>
+                <a class="nav-link active" href="cart.html">Bag</a>
+                <a class="nav-link" href="track.html">Track Order</a>
+                <a class="nav-link" href="login.html">Account</a>
+            </nav>
+
+            <div class="header-actions">
+                <a href="login.html" class="icon-btn" title="Account">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+                <a href="cart.html" class="icon-btn" title="Shopping Bag">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                        <path d="M3 6h18"></path>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span class="badge-count cart-count-badge">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Banner -->
+    <section class="page-hero-banner">
+        <h1>Your Shopping Bag</h1>
+        <p>Curated pieces thoughtfully held for your review.</p>
+    </section>
+
+    <!-- Cart Layout -->
+    <main class="cart-layout">
+        <!-- Cart Items List -->
+        <div class="cart-table-card">
+            <div id="cart-items-container">
+                <p style="text-align: center; color: var(--text-secondary); padding: 3rem;">Loading your bag...</p>
+            </div>
+        </div>
+
+        <!-- Sticky Order Summary Card -->
+        <div class="cart-summary-card">
+            <h3 style="font-size: 1.5rem; margin-bottom: 1.4rem;">Order Summary</h3>
+
+            <div class="summary-row">
+                <span>Bag Subtotal</span>
+                <strong id="cart-subtotal-display">₹0</strong>
+            </div>
+
+            <div class="summary-row" id="cart-discount-row" style="display: none; color: var(--accent-emerald);">
+                <span>Atelier VIP Discount</span>
+                <strong id="cart-discount-display">-₹0</strong>
+            </div>
+
+            <div class="summary-row">
+                <span>Estimated Delivery</span>
+                <span id="cart-shipping-display" style="color: var(--accent-emerald); font-weight: 600;">Complimentary</span>
+            </div>
+
+            <div class="summary-row total">
+                <span>Total Payable</span>
+                <span id="cart-total-display">₹0</span>
+            </div>
+
+            <!-- Promo Code Box -->
+            <div style="margin: 1.6rem 0; padding: 1rem; background: var(--bg-main); border: 1px solid var(--border-medium); border-radius: var(--radius-xs);">
+                <label for="promo-input-page" style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">🎟️ Have a Voucher or Festive Code?</label>
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <input type="text" id="promo-input-page" placeholder="e.g. NAVRATRI20 or WELCOME10" style="text-transform: uppercase; flex: 1;">
+                    <button type="button" id="apply-promo-btn-page" class="btn-secondary" style="padding: 0.6rem 1.2rem; font-weight: 700;">Apply</button>
+                </div>
+                <div id="cart-applied-coupon-row" style="display: none; font-size: 0.76rem; margin-bottom: 0.6rem; color: #15803d; font-weight: 600;">
+                    <!-- Filled by cart.js -->
+                </div>
+                <div style="border-top: 1px dashed var(--border-medium); padding-top: 0.6rem;">
+                    <span style="font-size: 0.72rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; display: block; margin-bottom: 0.4rem;">Tap to Apply Offers:</span>
+                    <div id="cart-quick-coupons" style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                        <!-- Rendered by cart.js -->
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1.8rem;">
+                <a href="checkout.html" id="checkout-link" class="btn-primary" style="text-align: center;">
+                    Proceed to Checkout <span>→</span>
+                </a>
+                <a href="index.html" class="btn-secondary" style="text-align: center;">
+                    Continue Browsing
+                </a>
+            </div>
+
+            <!-- Security Assurance -->
+            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light); font-size: 0.78rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.5rem;">
+                <p>🔒 256-bit Encrypted Checkout</p>
+                <p>📦 7-Day Easy Doorstep Exchanges</p>
+                <p>🌿 Carbon-neutral Sustainable Delivery</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Luxury Footer -->
+    <footer class="site-footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <h3>StyleHub .</h3>
+                <p>Everyday style, thoughtfully chosen. Crafted with uncompromising attention to tailoring and quiet luxury.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Collections</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html#collection">New Arrivals</a></li>
+                    <li><a href="product.html">Complete Catalog</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Assistance</h4>
+                <ul class="footer-links">
+                    <li><a href="cart.html">Shopping Bag</a></li>
+                    <li><a href="checkout.html">Checkout</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Atelier</h4>
+                <p style="color: #9ba4ab; font-size: 0.86rem;">
+                    Complimentary doorstep delivery on orders above ₹1,999.
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 StyleHub Atelier Inc. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/cart.js"></script>
+</body>
+</html>

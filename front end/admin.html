@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atelier Studio Management - StyleHub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body style="background: var(--bg-main);">
+
+    <!-- Minimal Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo-wrap">
+                <a class="logo" href="index.html">StyleHub <span>.</span></a>
+                <span class="admin-badge">STUDIO CONSOLE</span>
+                <span id="admin-owner-display" style="font-size: 0.82rem; color: #f3e5ab; font-weight: 600; margin-left: 0.75rem;">👑 Kamlesh Bargal (Master Owner)</span>
+            </div>
+            <nav class="nav-desktop">
+                <a class="nav-link" href="index.html" target="_blank">View Live Storefront ↗</a>
+                <a class="nav-link" href="product.html" target="_blank">Catalog ↗</a>
+                <button type="button" class="btn-secondary" id="btn-lock-admin" style="padding: 0.45rem 0.9rem; font-size: 0.8rem; background: rgba(220, 38, 38, 0.15); border-color: rgba(220, 38, 38, 0.4); color: #fca5a5;">🚪 Sign Out & Lock</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="admin-wrapper" id="admin-main-content">
+        <!-- Top Header Row -->
+        <div class="admin-header-row">
+            <div class="admin-title-group">
+                <span class="admin-badge"><span class="admin-status-dot"></span> LIVE XAMPP MYSQL • PORT 3306</span>
+                <h1>Atelier Operations Studio</h1>
+                <p style="color: #94a3b8; font-size: 0.94rem; margin: 0;">Master control center for inventory, customer orders, live member records & payments.</p>
+            </div>
+            <div style="display: flex; gap: 0.85rem; align-items: center; flex-wrap: wrap;">
+                <div style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); padding: 0.55rem 1.1rem; border-radius: var(--radius-xs); font-size: 0.84rem; color: #f1f5f9; display: flex; align-items: center; gap: 0.55rem;">
+                    <span>🕒</span> <strong id="admin-live-clock">Live Studio</strong>
+                </div>
+                <button type="button" class="btn-primary" onclick="loadAllAdminData()" style="padding: 0.65rem 1.4rem; font-size: 0.86rem; box-shadow: 0 4px 14px rgba(197, 160, 89, 0.25);">
+                    🔄 Refresh Live Data
+                </button>
+            </div>
+        </div>
+
+        <!-- KPI Metrics Cards -->
+        <div class="admin-kpi-grid">
+            <div class="admin-kpi-card kpi-gold">
+                <div class="kpi-top-row">
+                    <span class="kpi-icon">💰</span>
+                    <span class="kpi-pill">Verified Acquisitions</span>
+                </div>
+                <span class="kpi-label">Total Store Revenue</span>
+                <strong class="kpi-value" id="stat-revenue">₹0</strong>
+            </div>
+            <div class="admin-kpi-card kpi-blue">
+                <div class="kpi-top-row">
+                    <span class="kpi-icon">📦</span>
+                    <span class="kpi-pill">Live in MySQL</span>
+                </div>
+                <span class="kpi-label">Total Customer Orders</span>
+                <strong class="kpi-value" id="stat-orders">0</strong>
+            </div>
+            <div class="admin-kpi-card kpi-amber">
+                <div class="kpi-top-row">
+                    <span class="kpi-icon">⏳</span>
+                    <span class="kpi-pill">Action Required</span>
+                </div>
+                <span class="kpi-label">Pending Shipments</span>
+                <strong class="kpi-value" id="stat-pending" style="color: #b45309;">0</strong>
+            </div>
+            <div class="admin-kpi-card kpi-purple">
+                <div class="kpi-top-row">
+                    <span class="kpi-icon">👥</span>
+                    <span class="kpi-pill">Atelier Network</span>
+                </div>
+                <span class="kpi-label">Registered Members</span>
+                <strong class="kpi-value" id="stat-users">0</strong>
+            </div>
+            <div class="admin-kpi-card kpi-emerald">
+                <div class="kpi-top-row">
+                    <span class="kpi-icon">👗</span>
+                    <span class="kpi-pill">Shop Inventory</span>
+                </div>
+                <span class="kpi-label">Active Catalog Pieces</span>
+                <strong class="kpi-value" id="stat-products">0</strong>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="admin-tabs">
+            <button type="button" class="admin-tab-btn active" data-tab="tab-orders">
+                <span>📦</span> Customer Orders <span class="tab-badge" id="tab-orders-badge">0</span>
+            </button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-products">
+                <span>👗</span> Add 1 Piece & Catalog
+            </button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-bulk" style="border-color: rgba(197, 160, 89, 0.45);">
+                <span>⚡</span> Submit New Shop Stock <span class="tab-highlight-tag">STOCK BOX</span>
+            </button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-customers">
+                <span>👥</span> Member Accounts
+            </button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-coupons">
+                <span>🎟️</span> Promo Coupons
+            </button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-analytics">
+                <span>📈</span> Sales & Analytics
+            </button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-payment">
+                <span>💳</span> PhonePe / UPI Scanner
+            </button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-content">
+                <span>📢</span> Website Marquee Text
+            </button>
+        </div>
+
+
+        <!-- Tab 1: Orders Management -->
+        <section id="tab-orders" class="admin-tab-pane">
+            <div class="admin-table-container">
+                <div class="admin-table-header">
+                    <div>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">All Customer Acquisitions</h3>
+                        <p style="color: var(--text-muted); font-size: 0.8rem;">Change delivery status or cancel orders directly in the MySQL database.</p>
+                    </div>
+                    <div style="display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap;">
+                        <input type="search" id="order-search-input" class="admin-search-input" placeholder="Search orders by name or ID...">
+                        <select id="order-status-filter" style="padding: 0.55rem 0.9rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs); background: var(--bg-main); font-size: 0.84rem;">
+                            <option value="all">All Statuses</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Contact & Address</th>
+                                <th>Total</th>
+                                <th>Current Status</th>
+                                <th style="text-align: right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-orders-tbody">
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-muted);">Loading orders...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 2: Catalog Products Manager -->
+        <section id="tab-products" class="admin-tab-pane" style="display: none;">
+            <!-- Form to Add New Garment -->
+            <div class="admin-card-form">
+                <h3>Add New Garment to Atelier Collection</h3>
+                <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 1.8rem;">Publish any type of clothing directly into MySQL and the live store.</p>
+
+                <div style="display: grid; grid-template-columns: 1fr 310px; gap: 2rem; align-items: start;">
+                    <!-- Left: Input Form -->
+                    <form id="admin-add-product-form">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin-bottom: 1.2rem;">
+                            <div class="form-group">
+                                <label for="prod-name">Garment Title</label>
+                                <input type="text" id="prod-name" placeholder="e.g. Italian Wool Trench Coat or Pure Cotton Saree" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="prod-category">Clothing Type / Category</label>
+                                <select id="prod-category" style="width: 100%; padding: 0.9rem 1.2rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs); background: var(--bg-main);" required>
+                                    <optgroup label="👔 Men's Collection">
+                                        <option value="Men">Men - General</option>
+                                        <option value="Men Shirts">Men - Shirts & Formals</option>
+                                        <option value="Men T-Shirts">Men - T-Shirts & Polos</option>
+                                        <option value="Men Jeans">Men - Jeans & Denim</option>
+                                        <option value="Men Kurta">Men - Kurta & Ethnic</option>
+                                        <option value="Men Suits">Men - Blazers & Suits</option>
+                                    </optgroup>
+                                    <optgroup label="👗 Women's Collection">
+                                        <option value="Women" selected>Women - General</option>
+                                        <option value="Women Dresses">Women - Dresses & Gowns</option>
+                                        <option value="Women Sarees">Women - Sarees & Kurtis</option>
+                                        <option value="Women Tops">Women - Tops & Tees</option>
+                                        <option value="Women Jeans">Women - Jeans & Trousers</option>
+                                        <option value="Women Co-ords">Women - Co-ord Sets</option>
+                                    </optgroup>
+                                    <optgroup label="❄️ Winter & Outerwear">
+                                        <option value="Jackets">Jackets & Coats</option>
+                                        <option value="Hoodies">Hoodies & Sweaters</option>
+                                    </optgroup>
+                                    <optgroup label="🧒 Kids & Baby">
+                                        <option value="Kids">Kids - Boys & Girls</option>
+                                        <option value="Infants">Infants & Toddlers</option>
+                                    </optgroup>
+                                    <optgroup label="✨ Accessories & More">
+                                        <option value="Jewellery">Jewellery & Watches</option>
+                                        <option value="Footwear">Footwear & Shoes</option>
+                                    </optgroup>
+                                    <optgroup label="✍️ Custom Type">
+                                        <option value="__custom__">➕ Type My Own Custom Category...</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <!-- Custom Category Input (shown when Custom Type is chosen) -->
+                            <div class="form-group" id="custom-cat-wrap" style="display: none;">
+                                <label for="prod-custom-cat">Custom Clothing Type</label>
+                                <input type="text" id="prod-custom-cat" placeholder="e.g. Linen Kurtas, Party Wear Gowns, Gym Shorts">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prod-price">Retail Price (₹)</label>
+                                <input type="number" id="prod-price" placeholder="e.g. 2499" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="prod-image">Image (Web Link OR Upload File)</label>
+                                <input type="text" id="prod-image" placeholder="Paste image URL or choose file below (optional)">
+                                <input type="file" id="prod-image-file" accept="image/*" style="margin-top: 0.4rem; width: 100%; font-size: 0.8rem; padding: 0.4rem; border: 1px dashed var(--border-medium); border-radius: var(--radius-xs); background: var(--bg-main);">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary" style="padding: 0.85rem 1.8rem; width: 100%; max-width: 300px;">
+                            Publish Garment to Catalog <span>+</span>
+                        </button>
+                    </form>
+
+                    <!-- Right: Live Mockup Card Preview -->
+                    <div style="background: var(--bg-main); padding: 1.2rem; border-radius: var(--radius-xs); border: 1px solid var(--border-light); text-align: center;">
+                        <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.8rem;">✨ Live Customer Card Preview</span>
+                        <div class="product-card" style="margin: 0 auto; box-shadow: 0 4px 18px rgba(0,0,0,0.06); background: var(--bg-surface); border-radius: var(--radius-xs); overflow: hidden; border: 1px solid var(--border-medium);">
+                            <div class="product-thumb-wrap" style="height: 240px; overflow: hidden; position: relative;">
+                                <img id="live-preview-img" src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=600&q=80" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;">
+                                <span class="badge-tag new" id="live-preview-tag" style="position: absolute; top: 10px; left: 10px;">Atelier Drop</span>
+                            </div>
+                            <div class="product-details" style="text-align: left; padding: 1rem;">
+                                <span class="product-category-sub" id="live-preview-cat" style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Women</span>
+                                <h3 class="product-title" id="live-preview-title" style="font-size: 0.95rem; margin: 0.3rem 0; font-weight: 600;">Garment Title Preview</h3>
+                                <div class="product-card-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.8rem;">
+                                    <span class="current-price" id="live-preview-price" style="font-weight: 700; color: var(--accent-gold); font-size: 1.1rem;">₹2,499</span>
+                                    <span style="font-size: 0.76rem; background: var(--text-primary); color: #fff; padding: 0.35rem 0.7rem; border-radius: var(--radius-xs); font-weight: 600;">+ Add</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Shortcut to Bulk Importer -->
+            <div style="margin-bottom: 2rem; padding: 1.2rem 1.6rem; background: rgba(197, 160, 89, 0.1); border: 1px dashed var(--accent-gold); border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <strong style="font-size: 1.05rem; display: block; color: var(--text-primary);">⚡ Have multiple new stock items to add?</strong>
+                    <p style="margin: 0.2rem 0 0; font-size: 0.86rem; color: var(--text-secondary);">
+                        Paste your entire inventory list at once (Name, Category, Price) to import 5, 10, or 50 pieces in 1 click!
+                    </p>
+                </div>
+                <button type="button" class="btn-primary" onclick="document.querySelector('[data-tab=tab-bulk]').click()" style="padding: 0.75rem 1.4rem; font-size: 0.88rem;">
+                    Open Bulk Importer ➔
+                </button>
+            </div>
+
+            <!-- Existing Products Table -->
+            <div class="admin-table-container">
+                <div class="admin-table-header">
+                    <div>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Active Garments in Catalog</h3>
+                        <p style="color: var(--text-muted); font-size: 0.8rem;">All clothing pieces stored in the database.</p>
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Item & Garment Details</th>
+                                <th>Category</th>
+                                <th>Stock Status</th>
+                                <th>Price</th>
+                                <th style="text-align: right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-products-tbody">
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-muted);">Loading catalog...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab: Submit New Shop Stock -->
+        <section id="tab-bulk" class="admin-tab-pane" style="display: none;">
+            <div class="admin-card-form" style="max-width: 1100px; margin: 0 auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.8rem;">
+                    <div>
+                        <span class="admin-badge" style="background: rgba(197, 160, 89, 0.2); color: #8a661b;">SHOP STOCK SUBMISSION BOX</span>
+                        <h2 style="margin: 0.4rem 0 0.2rem; font-size: 1.5rem;">📦 Submit New Stock to Shop</h2>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
+                            Fill in your new arrivals below with prices, stock quantities, and photos. Then click <strong>Submit New Stock to Shop</strong>.
+                        </p>
+                    </div>
+                    <button type="button" class="btn-secondary" onclick="addStockRow()" style="padding: 0.65rem 1.3rem; font-size: 0.88rem; font-weight: 700;">
+                        + Add Another Item Row
+                    </button>
+                </div>
+
+                <!-- Stock Submission Form -->
+                <form id="stock-submission-form" onsubmit="handleStockFormSubmit(event)">
+                    <div style="overflow-x: auto; margin-top: 1rem; margin-bottom: 1.5rem;">
+                        <table class="admin-table" style="background: #ffffff; border: 1px solid var(--border-medium); border-radius: var(--radius-xs);">
+                            <thead>
+                                <tr>
+                                    <th style="min-width: 230px;">Garment / Piece Name</th>
+                                    <th style="min-width: 170px;">Category</th>
+                                    <th style="min-width: 130px;">Price (₹)</th>
+                                    <th style="min-width: 110px;">Stock Qty</th>
+                                    <th style="min-width: 180px;">Photo / Image</th>
+                                    <th style="text-align: center; width: 60px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stock-rows-tbody">
+                                <!-- Row 1 -->
+                                <tr class="stock-item-row">
+                                    <td>
+                                        <input type="text" class="stock-name" placeholder="e.g. Pure Cotton Oversized Tee" style="width: 100%; padding: 0.65rem 0.8rem; font-size: 0.88rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs);" required>
+                                    </td>
+                                    <td>
+                                        <select class="stock-category" style="width: 100%; padding: 0.65rem 0.8rem; font-size: 0.86rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs); background: var(--bg-main);">
+                                            <option value="Men T-Shirts">Men T-Shirts</option>
+                                            <option value="Men Shirts">Men Shirts</option>
+                                            <option value="Men Jeans">Men Jeans</option>
+                                            <option value="Men Kurta">Men Kurta / Ethnic</option>
+                                            <option value="Men Suits">Men Suits / Blazers</option>
+                                            <option value="Women Sarees">Women Sarees</option>
+                                            <option value="Women Kurtis">Women Kurtis</option>
+                                            <option value="Women Dresses">Women Dresses</option>
+                                            <option value="Women Tops">Women Tops</option>
+                                            <option value="Winterwear">Winterwear / Hoodies</option>
+                                            <option value="Kids">Kids & Youth</option>
+                                            <option value="Jewellery">Jewellery & Accessories</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="stock-price" placeholder="999" min="1" style="width: 100%; padding: 0.65rem 0.8rem; font-size: 0.88rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs);" required>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="stock-qty" placeholder="25" min="1" value="25" style="width: 100%; padding: 0.65rem 0.8rem; font-size: 0.88rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs);" required>
+                                    </td>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                            <img class="stock-row-preview" src="" style="display: none;">
+                                            <input type="file" class="stock-file" accept="image/*" onchange="handleRowFile(this)" style="width: 100%; font-size: 0.76rem; padding: 0.3rem;">
+                                            <input type="hidden" class="stock-img-data" value="">
+                                        </div>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <button type="button" onclick="removeStockRow(this)" style="background: none; border: none; color: var(--accent-terracotta); font-size: 1.1rem; cursor: pointer;" title="Remove Row">✕</button>
+                                    </td>
+                                </tr>
+                                <!-- Row 2 -->
+                                <tr class="stock-item-row">
+                                    <td>
+                                        <input type="text" class="stock-name" placeholder="e.g. Embroidered Silk Saree" style="width: 100%; padding: 0.65rem 0.8rem; font-size: 0.88rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs);">
+                                    </td>
+                                    <td>
+                                        <select class="stock-category" style="width: 100%; padding: 0.65rem 0.8rem; font-size: 0.86rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs); background: var(--bg-main);">
+                                            <option value="Women Sarees" selected>Women Sarees</option>
+                                            <option value="Women Kurtis">Women Kurtis</option>
+                                            <option value="Women Dresses">Women Dresses</option>
+                                            <option value="Women Tops">Women Tops</option>
+                                            <option value="Men T-Shirts">Men T-Shirts</option>
+                                            <option value="Men Shirts">Men Shirts</option>
+                                            <option value="Men Jeans">Men Jeans</option>
+                                            <option value="Winterwear">Winterwear / Hoodies</option>
+                                            <option value="Kids">Kids & Youth</option>
+                                            <option value="Jewellery">Jewellery & Accessories</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="stock-price" placeholder="2999" min="1" style="width: 100%; padding: 0.65rem 0.8rem; font-size: 0.88rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs);">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="stock-qty" placeholder="20" min="1" value="20" style="width: 100%; padding: 0.65rem 0.8rem; font-size: 0.88rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs);">
+                                    </td>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                            <img class="stock-row-preview" src="" style="display: none;">
+                                            <input type="file" class="stock-file" accept="image/*" onchange="handleRowFile(this)" style="width: 100%; font-size: 0.76rem; padding: 0.3rem;">
+                                            <input type="hidden" class="stock-img-data" value="">
+                                        </div>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <button type="button" onclick="removeStockRow(this)" style="background: none; border: none; color: var(--accent-terracotta); font-size: 1.1rem; cursor: pointer;" title="Remove Row">✕</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Action Bar with Clear Submit Box -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-top: 1px solid var(--border-light); padding-top: 1.5rem;">
+                        <button type="button" class="btn-secondary" onclick="addStockRow()" style="padding: 0.9rem 1.6rem;">
+                            + Add Another Row
+                        </button>
+
+                        <button type="submit" id="btn-submit-stock" class="btn-primary" style="padding: 1.1rem 2.8rem; font-size: 1.05rem; font-weight: 700; letter-spacing: 0.03em; box-shadow: 0 6px 20px rgba(0,0,0,0.18);">
+                            ✓ SUBMIT ALL NEW STOCK TO SHOP
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Optional Quick Paste Area -->
+                <details style="margin-top: 2rem; border-top: 1px dashed var(--border-medium); padding-top: 1rem;">
+                    <summary style="font-size: 0.88rem; color: var(--text-secondary); cursor: pointer; font-weight: 600;">
+                        📋 Prefer to paste a comma-separated list instead? Click to expand
+                    </summary>
+                    <div style="margin-top: 1rem;">
+                        <textarea id="bulk-products-input" rows="4" style="width: 100%; padding: 0.8rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs); background: var(--bg-main); font-family: monospace; font-size: 0.85rem; margin-bottom: 0.8rem;" placeholder="Oversized Cotton Tee, Men T-Shirts, 799&#10;Banarasi Silk Saree, Women Sarees, 3499&#10;Slim Fit Denim Jeans, Men Jeans, 1899"></textarea>
+                        <button type="button" class="btn-secondary" onclick="submitBulkProducts()" style="padding: 0.7rem 1.4rem; font-size: 0.85rem;">
+                            Import From Text Area
+                        </button>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- Tab 3: Customer Accounts -->
+        <section id="tab-customers" class="admin-tab-pane" style="display: none;">
+            <div class="admin-table-container">
+                <div class="admin-table-header">
+                    <div>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Registered Atelier Customers</h3>
+                        <p style="color: var(--text-muted); font-size: 0.8rem;">Customer accounts stored in MySQL.</p>
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Member Since</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-users-tbody">
+                            <tr>
+                                <td colspan="4" style="text-align: center; padding: 3rem; color: var(--text-muted);">Loading customers...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 4: Announcement Words Customizer -->
+        <section id="tab-content" class="admin-tab-pane" style="display: none;">
+            <div class="admin-card-form" style="max-width: 720px;">
+                <h3>Edit Announcement Marquee Words</h3>
+                <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 1.8rem;">Change the moving text banner at the top of the entire website.</p>
+
+                <form id="admin-announcement-form">
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label for="announcement-text">Announcement Marquee Text</label>
+                        <textarea id="announcement-text" rows="3" style="width: 100%; padding: 0.9rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs); background: var(--bg-main);" placeholder="Complimentary Global Courier on Orders Over ₹1,999 • Atelier Spring/Summer 2026 Archive Live"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary" style="padding: 0.85rem 1.8rem;">
+                        Save Announcement <span>✓</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Tab 5: PhonePe / UPI Scanner Settings -->
+        <section id="tab-payment" class="admin-tab-pane" style="display: none;">
+            <div class="admin-card-form" style="max-width: 760px;">
+                <span class="hero-tag" style="margin-bottom: 0.6rem;">STORE PAYMENT CONFIGURATION</span>
+                <h3>Set Your Own PhonePe / UPI Scanner</h3>
+                <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 2rem;">
+                    Configure your personal or merchant PhonePe UPI scanner so customers' payments are credited directly into your own bank account.
+                </p>
+
+                <form id="admin-payment-form">
+                    <!-- Method 1: Enter UPI ID -->
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                        <label for="admin-upi-id"><strong>Option 1: Your PhonePe UPI ID</strong></label>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                            Enter your PhonePe handle (e.g. <code>9876543210@ybl</code>, <code>yourname@ibl</code>, or <code>yourname@axl</code>). The website will dynamically generate the QR code with the exact order total encoded.
+                        </p>
+                        <input type="text" id="admin-upi-id" placeholder="e.g. 9876543210@ybl or kamlesh@ybl" style="width: 100%;">
+                    </div>
+
+                    <!-- Method 2: Upload Real PhonePe QR Screenshot -->
+                    <div class="form-group" style="margin-bottom: 1.8rem;">
+                        <label for="admin-qr-file"><strong>Option 2: Upload Your Own PhonePe Scanner Photo / Image</strong></label>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                            Upload a screenshot or photo of your official PhonePe QR code from your phone. This image will appear on the checkout page for customers.
+                        </p>
+                        <input type="file" id="admin-qr-file" accept="image/*" style="width: 100%; padding: 0.6rem; border: 1px dashed var(--border-medium); border-radius: var(--radius-xs); background: var(--bg-main);">
+                        
+                        <div id="admin-qr-preview-wrap" style="margin-top: 1rem; display: none;">
+                            <span style="font-size: 0.78rem; color: var(--text-secondary); display: block; margin-bottom: 0.4rem;">Scanner Preview:</span>
+                            <img id="admin-qr-preview-img" src="" alt="PhonePe Scanner Preview" style="width: 180px; height: 180px; object-fit: contain; background: #ffffff; border: 1px solid var(--border-medium); border-radius: var(--radius-xs); padding: 8px;">
+                            <button type="button" id="btn-remove-qr" style="display: block; margin-top: 0.5rem; color: var(--accent-terracotta); background: none; border: none; font-size: 0.8rem; cursor: pointer;">Remove custom QR photo</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="padding: 0.85rem 1.8rem;">
+                        Save My PhonePe Scanner Settings <span>✓</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Tab 6: Promo Coupons & Festive Engine -->
+        <section id="tab-coupons" class="admin-tab-pane" style="display: none;">
+            <!-- Festive Season Campaign Controller Card -->
+            <div style="background: linear-gradient(135deg, #18110b 0%, #29150b 50%, #1a120c 100%); border: 1px solid rgba(217, 163, 62, 0.4); border-radius: var(--radius-sm); padding: 1.8rem; margin-bottom: 2rem; color: #fff8eb; box-shadow: 0 8px 24px rgba(0,0,0,0.18);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.2rem;">
+                    <div>
+                        <span class="hero-tag" style="background: rgba(217, 163, 62, 0.2); color: #fbd36b; border: 1px solid rgba(217, 163, 62, 0.5); margin-bottom: 0.5rem; display: inline-block;">
+                            🪔 YEAR-ROUND FESTIVE & PROMO CAMPAIGN CONTROLLER
+                        </span>
+                        <h2 style="font-size: 1.4rem; color: #ffffff; margin: 0 0 0.3rem 0; font-family: var(--font-serif);">
+                            Dynamic Festival Season & Extra % Discounts
+                        </h2>
+                        <p style="color: #d1c7b8; font-size: 0.85rem; margin: 0; max-width: 680px;">
+                            Switch between automatic calendar detection or 1-click manual festive campaigns. Applies extra % discount coupons and real-time marquee banners across the entire website.
+                        </p>
+                    </div>
+
+                    <!-- Live Campaign Status Pill -->
+                    <div id="admin-festive-status-badge" style="background: rgba(22, 163, 74, 0.2); border: 1px solid rgba(34, 197, 94, 0.5); padding: 0.6rem 1rem; border-radius: 8px; text-align: right;">
+                        <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: #86efac; display: block; font-weight: 700;">Active Campaign</span>
+                        <strong id="admin-festive-active-text" style="font-size: 0.95rem; color: #ffffff;">Loading status...</strong>
+                    </div>
+                </div>
+
+                <!-- 1-Click Festive Presets -->
+                <div style="margin-bottom: 1.4rem; background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: var(--radius-xs); border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: #fbd36b; font-weight: 700; display: block; margin-bottom: 0.6rem;">
+                        ⚡ 1-Click Festival Presets (Click to Auto-fill):
+                    </span>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;" id="preset-buttons-container">
+                        <button type="button" class="btn-secondary" onclick="applyPreset('diwali')" style="font-size: 0.76rem; padding: 0.35rem 0.75rem; background: rgba(255, 255, 255, 0.08); color: #fff; border-color: rgba(217, 163, 62, 0.4);">
+                            🪔 Diwali (+25%)
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="applyPreset('navratri')" style="font-size: 0.76rem; padding: 0.35rem 0.75rem; background: rgba(255, 255, 255, 0.08); color: #fff; border-color: rgba(217, 163, 62, 0.4);">
+                            🌸 Navratri (+20%)
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="applyPreset('holi')" style="font-size: 0.76rem; padding: 0.35rem 0.75rem; background: rgba(255, 255, 255, 0.08); color: #fff; border-color: rgba(217, 163, 62, 0.4);">
+                            🎨 Holi (+20%)
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="applyPreset('eid')" style="font-size: 0.76rem; padding: 0.35rem 0.75rem; background: rgba(255, 255, 255, 0.08); color: #fff; border-color: rgba(217, 163, 62, 0.4);">
+                            🌙 Eid (+20%)
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="applyPreset('newyear')" style="font-size: 0.76rem; padding: 0.35rem 0.75rem; background: rgba(255, 255, 255, 0.08); color: #fff; border-color: rgba(217, 163, 62, 0.4);">
+                            ❄️ New Year (+30%)
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="applyPreset('freedom')" style="font-size: 0.76rem; padding: 0.35rem 0.75rem; background: rgba(255, 255, 255, 0.08); color: #fff; border-color: rgba(217, 163, 62, 0.4);">
+                            🇮🇳 Freedom (+20%)
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="applyPreset('auto')" style="font-size: 0.76rem; padding: 0.35rem 0.75rem; background: rgba(255, 255, 255, 0.08); color: #86efac; border-color: rgba(34, 197, 94, 0.4);">
+                            🤖 Auto Seasonal Calendar
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="applyPreset('normal')" style="font-size: 0.76rem; padding: 0.35rem 0.75rem; background: rgba(255, 255, 255, 0.08); color: #d1c7b8; border-color: rgba(255, 255, 255, 0.2);">
+                            🌿 Normal Everyday (Off)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Campaign Form -->
+                <form id="festive-campaign-form">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                        <div class="form-group">
+                            <label for="festive-mode-select" style="color: #fbd36b; font-size: 0.78rem;">Operation Mode</label>
+                            <select id="festive-mode-select" style="width: 100%; padding: 0.7rem; background: rgba(255, 255, 255, 0.08); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: var(--radius-xs);">
+                                <option value="auto" style="background: #1f140e; color: #fff;">🤖 Auto Calendar (Changes with season)</option>
+                                <option value="manual" style="background: #1f140e; color: #fff;">⚡ Force Campaign ON (Manual)</option>
+                                <option value="off" style="background: #1f140e; color: #fff;">🌿 Normal Everyday Mode (Off)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="festive-name-input" style="color: #fbd36b; font-size: 0.78rem;">Festival Name</label>
+                            <input type="text" id="festive-name-input" placeholder="e.g. Diwali Dhamaka Sale" style="width: 100%; padding: 0.7rem; background: rgba(255, 255, 255, 0.08); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: var(--radius-xs);">
+                        </div>
+                        <div class="form-group">
+                            <label for="festive-code-input" style="color: #fbd36b; font-size: 0.78rem;">Coupon Code *</label>
+                            <input type="text" id="festive-code-input" placeholder="e.g. DIWALI25" style="width: 100%; padding: 0.7rem; background: rgba(255, 255, 255, 0.08); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: var(--radius-xs); text-transform: uppercase;">
+                        </div>
+                        <div class="form-group">
+                            <label for="festive-discount-input" style="color: #fbd36b; font-size: 0.78rem;">Extra Discount (%) *</label>
+                            <input type="number" id="festive-discount-input" placeholder="e.g. 25" min="1" max="90" style="width: 100%; padding: 0.7rem; background: rgba(255, 255, 255, 0.08); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: var(--radius-xs);">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1.2rem;">
+                        <label for="festive-banner-input" style="color: #fbd36b; font-size: 0.78rem;">Announcement Marquee Banner Text</label>
+                        <input type="text" id="festive-banner-input" placeholder="e.g. 🪔 Grand Festive Dhamaka Live! Extra 25% OFF with code DIWALI25" style="width: 100%; padding: 0.7rem; background: rgba(255, 255, 255, 0.08); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: var(--radius-xs);">
+                    </div>
+
+                    <div style="display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap;">
+                        <button type="submit" class="btn-primary" style="padding: 0.75rem 1.8rem; font-size: 0.84rem; font-weight: 700; background: var(--accent-gold); color: #111; border: none;">
+                            🚀 Broadcast Festival Campaign to Website
+                        </button>
+                        <span id="festive-save-feedback" style="font-size: 0.8rem; color: #86efac; display: none;">✓ Campaign live across all pages!</span>
+                    </div>
+                </form>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem; align-items: start;">
+                <!-- Add Coupon Form -->
+                <div class="admin-card-form">
+                    <span class="hero-tag" style="margin-bottom: 0.6rem;">DISCOUNT & PROMO CODES</span>
+                    <h3>Create Custom Coupon</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.5rem;">
+                        Add festive offers, influencer promo codes, or welcome discounts.
+                    </p>
+
+                    <form id="create-coupon-form">
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <label for="coupon-code">Coupon Code *</label>
+                            <input type="text" id="coupon-code" placeholder="e.g. DIWALI25 or VIP500" style="text-transform: uppercase;" required>
+                        </div>
+
+                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div class="form-group">
+                                <label for="coupon-type">Discount Type</label>
+                                <select id="coupon-type" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs); background: var(--bg-main);">
+                                    <option value="percentage">Percentage Off (%)</option>
+                                    <option value="fixed">Fixed Amount Off (₹)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="coupon-value">Discount Value *</label>
+                                <input type="number" id="coupon-value" placeholder="e.g. 15 or 500" min="1" step="1" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <label for="coupon-min-order">Min Order Value (₹)</label>
+                            <input type="number" id="coupon-min-order" placeholder="0 for no minimum" value="0" min="0">
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 1.5rem;">
+                            <label for="coupon-desc">Description / Campaign Note</label>
+                            <input type="text" id="coupon-desc" placeholder="e.g. 15% off on all collections">
+                        </div>
+
+                        <button type="submit" class="btn-primary" style="width: 100%; padding: 0.8rem;">
+                            Save & Activate Coupon <span>+</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Coupons Table -->
+                <div class="admin-table-container">
+                    <div class="admin-table-header">
+                        <div>
+                            <h3 style="font-size: 1.15rem; margin-bottom: 0.2rem;">Active Promotional Coupons</h3>
+                            <p style="color: var(--text-muted); font-size: 0.8rem;">Live in MySQL database and verified in checkout.</p>
+                        </div>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="admin-table" id="admin-coupons-table">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Discount</th>
+                                    <th>Min Order</th>
+                                    <th>Description</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-coupons-tbody">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-muted);">Loading coupons...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 7: Sales Growth & Analytics -->
+        <section id="tab-analytics" class="admin-tab-pane" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h3 style="font-size: 1.25rem; margin: 0 0 0.3rem 0;">Financial Growth & Catalog Distribution</h3>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Visual business insights powered by live MySQL transaction records.</p>
+                </div>
+                <button type="button" class="btn-secondary" onclick="renderAdminCharts()" style="padding: 0.55rem 1.1rem; font-size: 0.82rem;">
+                    📊 Re-render Charts
+                </button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem;">
+                <!-- Chart 1: Revenue Trend -->
+                <div style="background: var(--bg-card); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+                        <h4 style="font-size: 1rem; font-weight: 600; margin: 0;">📈 Revenue per Order (Last Acquisitions)</h4>
+                        <span style="font-size: 0.75rem; color: var(--accent-gold); font-weight: 600;">INR ₹</span>
+                    </div>
+                    <div style="position: relative; height: 260px; width: 100%;">
+                        <canvas id="chart-revenue-trend"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 2: Category Breakdown -->
+                <div style="background: var(--bg-card); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+                        <h4 style="font-size: 1rem; font-weight: 600; margin: 0;">👗 Catalog Breakdown by Department</h4>
+                        <span style="font-size: 0.75rem; color: var(--text-muted);">Stock Units</span>
+                    </div>
+                    <div style="position: relative; height: 260px; width: 100%;">
+                        <canvas id="chart-category-dist"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

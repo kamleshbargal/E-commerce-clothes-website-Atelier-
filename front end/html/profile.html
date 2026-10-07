@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Profile & Orders - StyleHub Haute Atelier</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+
+    <!-- Minimal Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo-wrap">
+                <a class="logo" href="index.html">StyleHub <span>.</span></a>
+                <span class="logo-tag">Customer Profile</span>
+            </div>
+            <nav class="nav-desktop">
+                <a class="nav-link" href="index.html">Storefront</a>
+                <a class="nav-link" href="product.html">Curated Catalog</a>
+                <a class="nav-link" href="cart.html">Shopping Bag</a>
+                <button type="button" class="btn-secondary" id="btn-logout" style="padding: 0.5rem 1rem; font-size: 0.82rem;">Sign Out</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="profile-wrapper">
+        <!-- Customer Profile Hero Card -->
+        <div class="profile-hero-card">
+            <div class="profile-user-info">
+                <div class="profile-avatar-circle" id="profile-avatar">U</div>
+                <div>
+                    <span class="hero-tag" style="margin-bottom: 0.4rem;">ATELIER MEMBER</span>
+                    <h1 id="profile-name" style="font-size: 2rem; margin-bottom: 0.3rem;">Valued Member</h1>
+                    <p id="profile-email" style="color: var(--text-secondary); font-size: 0.9rem;">member@example.com</p>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a href="product.html" class="btn-primary">Browse New Arrivals <span>→</span></a>
+            </div>
+        </div>
+
+        <!-- Orders Section Header -->
+        <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+            <p class="section-subtitle">ORDER HISTORY & STATUS</p>
+            <h2 class="section-title">Your Atelier Acquisitions</h2>
+            <p class="section-desc">Track real-time courier progress and view itemized invoices for your recent orders.</p>
+        </div>
+
+        <!-- Orders List Container -->
+        <div id="profile-orders-container" class="profile-orders-list">
+            <div style="text-align: center; padding: 4rem 1rem; color: var(--text-muted);">
+                <p>Loading your acquisitions...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Luxury Printable Invoice Modal -->
+    <div class="invoice-modal-overlay" id="invoice-modal">
+        <div class="invoice-paper">
+            <div class="invoice-top-bar">
+                <div class="invoice-brand">
+                    <h2>StyleHub Atelier .</h2>
+                    <p style="font-size: 0.8rem; color: #666666; letter-spacing: 0.05em;">HAUTE COUTURE & READY-TO-WEAR</p>
+                </div>
+                <div class="invoice-meta-right">
+                    <p><strong id="inv-order-id">#SH-2026-0000</strong></p>
+                    <p id="inv-date">Date: September 12, 2026</p>
+                    <p style="color: #2e7d32; font-weight: 600;" id="inv-status">Status: Paid & Confirmed</p>
+                </div>
+            </div>
+
+            <div class="invoice-addresses-grid">
+                <div>
+                    <h4 style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: #888888; margin-bottom: 0.4rem;">Delivered To</h4>
+                    <p><strong id="inv-customer-name">Customer Name</strong></p>
+                    <p id="inv-customer-address">123 Atelier Street</p>
+                    <p id="inv-customer-phone">+91 00000 00000</p>
+                    <p id="inv-customer-email">customer@example.com</p>
+                </div>
+                <div style="text-align: right;">
+                    <h4 style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: #888888; margin-bottom: 0.4rem;">Atelier Details</h4>
+                    <p><strong>StyleHub Atelier Flagship</strong></p>
+                    <p>Bandra West, Mumbai 400050</p>
+                    <p>support@stylehub.atelier</p>
+                    <p>GSTIN: 27AABCS1429B1Z8</p>
+                </div>
+            </div>
+
+            <table class="invoice-items-table">
+                <thead>
+                    <tr>
+                        <th>Item Description</th>
+                        <th style="text-align: center;">Qty</th>
+                        <th style="text-align: right;">Price</th>
+                        <th style="text-align: right;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="inv-items-body">
+                    <tr>
+                        <td>Artisanal Cashmere Knit Sweater (Size M)</td>
+                        <td style="text-align: center;">1</td>
+                        <td style="text-align: right;">₹2,499</td>
+                        <td style="text-align: right;">₹2,499</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="invoice-totals-area">
+                <div class="invoice-totals-box">
+                    <div class="invoice-total-row">
+                        <span>Subtotal:</span>
+                        <strong id="inv-subtotal">₹2,499</strong>
+                    </div>
+                    <div class="invoice-total-row">
+                        <span>Delivery:</span>
+                        <span style="color: #2e7d32;">Complimentary Express</span>
+                    </div>
+                    <div class="invoice-total-row grand-total">
+                        <span>Grand Total:</span>
+                        <strong id="inv-grand-total">₹2,499</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div style="font-size: 0.76rem; color: #888888; border-top: 1px solid #eeeeee; padding-top: 1rem; line-height: 1.5;">
+                Thank you for selecting StyleHub Atelier. Every piece is handcrafted with uncompromising dedication to quality and timeless aesthetics.
+            </div>
+
+            <div class="invoice-actions-bar">
+                <button type="button" class="btn-secondary" onclick="closeInvoiceModal()" style="padding: 0.6rem 1.2rem; font-size: 0.85rem;">Close</button>
+                <button type="button" class="btn-primary" onclick="window.print()" style="padding: 0.6rem 1.4rem; font-size: 0.85rem;">🖨️ Print / Save PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Luxury Footer -->
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            <p>© 2026 StyleHub Atelier Inc. All rights reserved.</p>
+            <div style="display: flex; gap: 1.5rem;">
+                <a href="index.html">Storefront</a>
+                <a href="product.html">Curated Catalog</a>
+                <a href="admin-login.html" style="color: var(--accent-gold);">👑 Admin Panel 🔒</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>
