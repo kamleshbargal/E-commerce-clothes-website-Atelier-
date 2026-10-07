@@ -139,14 +139,9 @@ async function submitAuthForm(event) {
         showFormMessage(form, successMsg, false);
         showToast(successMsg, "✨");
 
-        // Save session
+        // Save session strictly as customer
         const userName = (result.user && result.user.name) || result.name || payload.name || "Customer";
-        const userRole = result.role || (email.toLowerCase().includes("kamleshbargal") ? "admin" : "customer");
-        localStorage.setItem("stylehub_user", JSON.stringify({ email, name: userName, role: userRole }));
-
-        if (userRole === "admin") {
-            sessionStorage.setItem("stylehub_admin_auth", "true");
-        }
+        localStorage.setItem("stylehub_user", JSON.stringify({ email, name: userName, role: "customer" }));
 
         // Store into registered users directory
         const usersList = JSON.parse(localStorage.getItem("stylehub_users")) || [];
@@ -249,19 +244,6 @@ function initUserHeaderBtn() {
             dot.className = "auth-active-dot";
             dot.style.cssText = "position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-emerald); border: 2px solid var(--bg-surface);";
             userBtn.appendChild(dot);
-        }
-    }
-
-    // If logged in as Administrator, show prominent gold Admin Studio link in nav
-    if (user && (user.role === "admin" || user.email === "kamleshbargal28@gmail.com" || user.email === "kamleshbargal58@gmail.com")) {
-        sessionStorage.setItem("stylehub_admin_auth", "true");
-        const nav = document.querySelector(".nav-desktop");
-        if (nav && !nav.querySelector(".nav-admin-link")) {
-            const adminLink = document.createElement("a");
-            adminLink.className = "nav-link nav-admin-link";
-            adminLink.href = "admin.html";
-            adminLink.innerHTML = `<span style="color: var(--accent-gold); font-weight: 700;">👑 Admin Studio</span>`;
-            nav.appendChild(adminLink);
         }
     }
 }
