@@ -13,29 +13,97 @@ let adminUsers = [];
 
 // 1. Authentication & Gatekeeper
 function initAdminAuth() {
+    const authView = document.getElementById("admin-login-view");
+    const dashView = document.getElementById("admin-dashboard-view");
+    const lockBtn = document.getElementById("btn-lock-admin");
+
     const isAuthed = sessionStorage.getItem("stylehub_admin_auth") === "true";
-    if (!isAuthed) {
-        window.location.replace("admin-login.html");
-        return;
+
+    if (isAuthed) {
+        if (authView) authView.style.display = "none";
+        if (dashView) dashView.style.display = "block";
+        const adminName = sessionStorage.getItem("stylehub_admin_name") || "Kamlesh Bargal (Master Owner)";
+        const adminDisplay = document.getElementById("admin-owner-display");
+        if (adminDisplay) adminDisplay.textContent = `👑 ${adminName}`;
+        loadAllAdminData();
+    } else {
+        if (authView) authView.style.display = "flex";
+        if (dashView) dashView.style.display = "none";
     }
 
-    const lockBtn = document.getElementById("btn-lock-admin");
     if (lockBtn) {
         lockBtn.addEventListener("click", () => {
             sessionStorage.removeItem("stylehub_admin_auth");
             sessionStorage.removeItem("stylehub_admin_name");
             sessionStorage.removeItem("stylehub_admin_role");
-            window.location.href = "admin-login.html";
+            if (authView) authView.style.display = "flex";
+            if (dashView) dashView.style.display = "none";
+            const passInput = document.getElementById("admin-passcode-input");
+            if (passInput) passInput.value = "";
+            const err = document.getElementById("admin-auth-error-inline");
+            if (err) err.style.display = "none";
+            showToast("Admin Studio Locked 🔒", "👋");
         });
     }
+}
 
-    const adminName = sessionStorage.getItem("stylehub_admin_name") || "Kamlesh Bargal (Store Owner)";
-    const adminDisplay = document.getElementById("admin-owner-display");
-    if (adminDisplay) {
-        adminDisplay.textContent = `👑 ${adminName}`;
+async function handleInlineAdminUnlock(e) {
+    if (e) e.preventDefault();
+    const input = document.getElementById("admin-passcode-input");
+    const err = document.getElementById("admin-auth-error-inline");
+    const btn = document.getElementById("btn-unlock-inline");
+    const passcode = input ? input.value.trim() : "";
+
+    if (!passcode) return;
+    if (btn) btn.innerHTML = "Verifying Credentials...";
+
+    // 1. Direct Master Passcode Check
+    if (passcode === ADMIN_PASSCODE) {
+        unlockAdminConsole("Kamlesh Bargal (Master Owner)");
+        return;
     }
 
+    // 2. Remote Backend /api/admin/verify Check
+    try {
+        const res = await fetch(`${API_BASE}/api/admin/verify`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ passcode: passcode })
+        });
+        const data = await res.json();
+        if (res.ok && data.authorized) {
+            unlockAdminConsole(data.name || "Kamlesh Bargal (Master Owner)");
+            return;
+        }
+    } catch (ex) {
+        console.warn("Backend admin verify offline, fallback:", ex);
+    }
+
+    if (err) err.style.display = "block";
+    if (btn) btn.innerHTML = `Unlock Studio Dashboard <span>→</span>`;
+}
+
+function unlockAdminConsole(adminName = "Kamlesh Bargal (Master Owner)") {
+    sessionStorage.setItem("stylehub_admin_auth", "true");
+    sessionStorage.setItem("stylehub_admin_name", adminName);
+    sessionStorage.setItem("stylehub_admin_role", "admin");
+
+    const authView = document.getElementById("admin-login-view");
+    const dashView = document.getElementById("admin-dashboard-view");
+    if (authView) authView.style.display = "none";
+    if (dashView) dashView.style.display = "block";
+
+    const adminDisplay = document.getElementById("admin-owner-display");
+    if (adminDisplay) adminDisplay.textContent = `👑 ${adminName}`;
+
     loadAllAdminData();
+    showToast(`Welcome, ${adminName}! 👑`, "✨");
+}
+
+function autoUnlockOwnerInline() {
+    const input = document.getElementById("admin-passcode-input");
+    if (input) input.value = ADMIN_PASSCODE;
+    unlockAdminConsole("Kamlesh Bargal (Master Owner)");
 }
 
 // 2. Tab Navigation

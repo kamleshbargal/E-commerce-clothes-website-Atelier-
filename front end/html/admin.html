@@ -11,23 +11,69 @@
 </head>
 <body style="background: var(--bg-main);">
 
-    <!-- Minimal Header -->
-    <header class="site-header">
-        <div class="header-container">
-            <div class="logo-wrap">
-                <a class="logo" href="index.html">StyleHub <span>.</span></a>
-                <span class="admin-badge">STUDIO CONSOLE</span>
-                <span id="admin-owner-display" style="font-size: 0.82rem; color: #f3e5ab; font-weight: 600; margin-left: 0.75rem;">👑 Kamlesh Bargal (Master Owner)</span>
+    <!-- 1. Integrated Admin Login View (Shown when not authenticated) -->
+    <div id="admin-login-view" style="display: none; min-height: 100vh; align-items: center; justify-content: center; padding: 2.5rem 1.5rem; background: radial-gradient(circle at 50% 20%, #151b23 0%, #0b0f14 100%); box-sizing: border-box;">
+        <div style="background: #121820; border: 1.5px solid rgba(197, 160, 89, 0.45); border-radius: 18px; max-width: 450px; width: 100%; padding: 3.2rem 2.4rem; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(197, 160, 89, 0.1); position: relative; text-align: center; overflow: hidden;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #c5a059, #f3e5ab, #c5a059);"></div >
+            <div style="width: 66px; height: 66px; margin: 0 auto 1.2rem; background: rgba(197, 160, 89, 0.12); border: 1px solid rgba(197, 160, 89, 0.35); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; box-shadow: 0 8px 24px rgba(197, 160, 89, 0.15);">
+                👑
             </div>
-            <nav class="nav-desktop">
-                <a class="nav-link" href="index.html" target="_blank">View Live Storefront ↗</a>
-                <a class="nav-link" href="product.html" target="_blank">Catalog ↗</a>
-                <button type="button" class="btn-secondary" id="btn-lock-admin" style="padding: 0.45rem 0.9rem; font-size: 0.8rem; background: rgba(220, 38, 38, 0.15); border-color: rgba(220, 38, 38, 0.4); color: #fca5a5;">🚪 Sign Out & Lock</button>
-            </nav>
-        </div>
-    </header>
+            <span class="admin-badge" style="margin-bottom: 0.75rem;">OWNER STUDIO VAULT</span>
+            <h1 style="font-size: 1.85rem; color: #ffffff; font-family: var(--font-serif); margin-bottom: 0.4rem;">
+                Kamlesh's Atelier Studio
+            </h1>
+            <p style="color: #94a3b8; font-size: 0.86rem; line-height: 1.5; margin-bottom: 1.8rem;">
+                Authorized administration portal for store owner Kamlesh Bargal. Enter your studio master passcode to access the operations dashboard.
+            </p>
 
-    <main class="admin-wrapper" id="admin-main-content">
+            <form id="admin-passcode-form" onsubmit="handleInlineAdminUnlock(event)">
+                <div class="form-group" style="margin-bottom: 1.2rem; text-align: left;">
+                    <label style="color: #cbd5e1; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.45rem; display: block;">
+                        Studio Master Passcode
+                    </label>
+                    <input type="password" id="admin-passcode-input" placeholder="••••••••••••" style="text-align: center; letter-spacing: 0.28em; font-size: 1.15rem; background: #090d12; border: 1.5px solid rgba(255, 255, 255, 0.15); color: #ffffff; padding: 0.9rem; border-radius: 8px; width: 100%; box-sizing: border-box;" required>
+                </div>
+
+                <button type="submit" id="btn-unlock-inline" class="btn-primary" style="width: 100%; padding: 0.95rem; font-weight: 700; box-shadow: 0 4px 18px rgba(197, 160, 89, 0.35);">
+                    Unlock Studio Dashboard <span>→</span>
+                </button>
+
+                <div style="margin-top: 1.1rem;">
+                    <button type="button" onclick="autoUnlockOwnerInline()" style="background: none; border: none; color: #dfc282; font-size: 0.82rem; cursor: pointer; text-decoration: underline; font-weight: 600;">
+                        ⚡ 1-Click Master Owner Unlock (Kamlesh Bargal)
+                    </button>
+                </div>
+
+                <p id="admin-auth-error-inline" style="color: var(--accent-terracotta); font-size: 0.84rem; margin-top: 1rem; display: none; background: rgba(220, 38, 38, 0.12); border: 1px solid rgba(220, 38, 38, 0.35); padding: 0.6rem; border-radius: 6px;">
+                    ⚠️ Invalid studio passcode. Please re-enter or click 1-Click Unlock.
+                </p>
+            </form>
+
+            <div style="margin-top: 1.8rem; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 1.2rem;">
+                <a href="index.html" style="font-size: 0.82rem; color: #94a3b8; text-decoration: underline;">← Return to Public Storefront</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Integrated Admin Operations Dashboard View (Shown when authenticated) -->
+    <div id="admin-dashboard-view" style="display: none;">
+        <!-- Minimal Header -->
+        <header class="site-header">
+            <div class="header-container">
+                <div class="logo-wrap">
+                    <a class="logo" href="index.html">StyleHub <span>.</span></a>
+                    <span class="admin-badge">STUDIO CONSOLE</span>
+                    <span id="admin-owner-display" style="font-size: 0.82rem; color: #f3e5ab; font-weight: 600; margin-left: 0.75rem;">👑 Kamlesh Bargal (Master Owner)</span>
+                </div>
+                <nav class="nav-desktop">
+                    <a class="nav-link" href="index.html" target="_blank">View Live Storefront ↗</a>
+                    <a class="nav-link" href="product.html" target="_blank">Catalog ↗</a>
+                    <button type="button" class="btn-secondary" id="btn-lock-admin" style="padding: 0.45rem 0.9rem; font-size: 0.8rem; background: rgba(220, 38, 38, 0.15); border-color: rgba(220, 38, 38, 0.4); color: #fca5a5;">🔒 Lock Console</button>
+                </nav>
+            </div>
+        </header>
+
+        <main class="admin-wrapper" id="admin-main-content">
         <!-- Top Header Row -->
         <div class="admin-header-row">
             <div class="admin-title-group">
@@ -735,7 +781,7 @@
             </div>
         </section>
     </main>
-
+    </div> <!-- End admin-dashboard-view -->
 
     <!-- Scripts -->
     <script src="js/main.js"></script>
