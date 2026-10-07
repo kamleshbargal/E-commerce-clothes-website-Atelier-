@@ -82,7 +82,6 @@ def init_db():
     # 2. Create tables
     try:
         conn = get_db_connection()
-    try:
         with conn.cursor() as cursor:
             cursor.execute(
                 """
@@ -228,11 +227,11 @@ def init_db():
                     (4, 'Rajesh M.', 5, 'Warm, sleek, and premium zipper finish. Real luxury at honest pricing.')
                     """
                 )
+    except Exception as e:
+        print(f"[DB Notice] Running with local/in-memory configuration: {e}")
     finally:
         if 'conn' in locals() and conn:
             conn.close()
-    except Exception as e:
-        print(f"[DB Notice] Running with local/in-memory configuration: {e}")
 
 
 def seed_products(products):
