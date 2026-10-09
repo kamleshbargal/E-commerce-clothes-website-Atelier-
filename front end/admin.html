@@ -136,6 +136,9 @@
                             <option value="Delivered">Delivered</option>
                             <option value="Cancelled">Cancelled</option>
                         </select>
+                        <button type="button" class="btn-secondary" onclick="exportOrdersToCSV()" style="padding: 0.55rem 0.95rem; font-size: 0.82rem; display: flex; align-items: center; gap: 0.4rem; background: rgba(197, 160, 89, 0.12); border-color: rgba(197, 160, 89, 0.4); color: #f5e6c8;" title="Export orders to CSV / Excel">
+                            <span>📥</span> Export Orders (CSV)
+                        </button>
                     </div>
                 </div>
 
@@ -276,6 +279,11 @@
                     <div>
                         <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Active Garments in Catalog</h3>
                         <p style="color: var(--text-muted); font-size: 0.8rem;">All clothing pieces stored in the database.</p>
+                    </div>
+                    <div>
+                        <button type="button" class="btn-secondary" onclick="exportProductsToCSV()" style="padding: 0.55rem 0.95rem; font-size: 0.82rem; display: flex; align-items: center; gap: 0.4rem; background: rgba(197, 160, 89, 0.12); border-color: rgba(197, 160, 89, 0.4); color: #f5e6c8;" title="Export inventory catalog to CSV / Excel">
+                            <span>📥</span> Export Inventory (CSV)
+                        </button>
                     </div>
                 </div>
 
@@ -443,6 +451,11 @@
                     <div>
                         <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Registered Atelier Customers</h3>
                         <p style="color: var(--text-muted); font-size: 0.8rem;">Customer accounts stored in MySQL.</p>
+                    </div>
+                    <div>
+                        <button type="button" class="btn-secondary" onclick="exportCustomersToCSV()" style="padding: 0.55rem 0.95rem; font-size: 0.82rem; display: flex; align-items: center; gap: 0.4rem; background: rgba(197, 160, 89, 0.12); border-color: rgba(197, 160, 89, 0.4); color: #f5e6c8;" title="Export customer accounts to CSV">
+                            <span>📥</span> Export Members (CSV)
+                        </button>
                     </div>
                 </div>
 
@@ -702,22 +715,58 @@
         <section id="tab-analytics" class="admin-tab-pane" style="display: none;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
                 <div>
-                    <h3 style="font-size: 1.25rem; margin: 0 0 0.3rem 0;">Financial Growth & Catalog Distribution</h3>
-                    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Visual business insights powered by live MySQL transaction records.</p>
+                    <h3 style="font-size: 1.25rem; margin: 0 0 0.3rem 0;">Financial Growth & Business Analytics</h3>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">Interactive real-time sales charts and order analytics powered by live database records.</p>
                 </div>
-                <button type="button" class="btn-secondary" onclick="renderAdminCharts()" style="padding: 0.55rem 1.1rem; font-size: 0.82rem;">
-                    📊 Re-render Charts
-                </button>
+                <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+                    <button type="button" class="btn-secondary" onclick="exportOrdersToCSV()" style="padding: 0.55rem 1rem; font-size: 0.82rem; display: flex; align-items: center; gap: 0.4rem; background: rgba(197, 160, 89, 0.15); border-color: rgba(197, 160, 89, 0.45); color: #f5e6c8;" title="Export all orders to CSV">
+                        <span>📥</span> Export Orders CSV
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="exportProductsToCSV()" style="padding: 0.55rem 1rem; font-size: 0.82rem; display: flex; align-items: center; gap: 0.4rem; background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.2); color: #fff;" title="Export inventory to CSV">
+                        <span>📦</span> Export Stock CSV
+                    </button>
+                    <button type="button" class="btn-primary" onclick="renderAdminCharts()" style="padding: 0.55rem 1.1rem; font-size: 0.82rem; display: flex; align-items: center; gap: 0.4rem;">
+                        <span>📊</span> Refresh Charts
+                    </button>
+                </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem;">
-                <!-- Chart 1: Revenue Trend -->
+            <!-- Analytics Key Metrics Summary -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                <div style="background: rgba(197, 160, 89, 0.08); border: 1px solid rgba(197, 160, 89, 0.25); border-radius: var(--radius-sm); padding: 1.2rem;">
+                    <span style="font-size: 0.75rem; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Average Order Value (AOV)</span>
+                    <div id="analytics-aov-val" style="font-size: 1.45rem; font-weight: 700; color: #f5e6c8; margin-top: 0.3rem;">₹0</div>
+                    <span style="font-size: 0.72rem; color: #94a3b8;">Per completed order</span>
+                </div>
+                <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: var(--radius-sm); padding: 1.2rem;">
+                    <span style="font-size: 0.75rem; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Fulfillment Success Rate</span>
+                    <div id="analytics-fulfillment-val" style="font-size: 1.45rem; font-weight: 700; color: #93c5fd; margin-top: 0.3rem;">0%</div>
+                    <span style="font-size: 0.72rem; color: #94a3b8;">Dispatched & Delivered</span>
+                </div>
+                <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-sm); padding: 1.2rem;">
+                    <span style="font-size: 0.75rem; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Top Performing Dept</span>
+                    <div id="analytics-top-dept-val" style="font-size: 1.45rem; font-weight: 700; color: #86efac; margin-top: 0.3rem;">Women</div>
+                    <span style="font-size: 0.72rem; color: #94a3b8;">Highest inventory & demand</span>
+                </div>
+                <div style="background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: var(--radius-sm); padding: 1.2rem;">
+                    <span style="font-size: 0.75rem; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Active Store Catalog</span>
+                    <div id="analytics-catalog-val" style="font-size: 1.45rem; font-weight: 700; color: #d8b4fe; margin-top: 0.3rem;">0 Pieces</div>
+                    <span style="font-size: 0.72rem; color: #94a3b8;">Ready for purchase</span>
+                </div>
+            </div>
+
+            <!-- Charts Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 1.5rem;">
+                <!-- Chart 1: Revenue per Order Timeline -->
                 <div style="background: var(--bg-card); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
-                        <h4 style="font-size: 1rem; font-weight: 600; margin: 0;">📈 Revenue per Order (Last Acquisitions)</h4>
-                        <span style="font-size: 0.75rem; color: var(--accent-gold); font-weight: 600;">INR ₹</span>
+                        <div>
+                            <h4 style="font-size: 1rem; font-weight: 600; margin: 0;">📈 Revenue Progression per Acquisition</h4>
+                            <span style="font-size: 0.74rem; color: var(--text-muted);">Recent order values & trajectory</span>
+                        </div>
+                        <span style="font-size: 0.78rem; color: var(--accent-gold); font-weight: 700; background: rgba(197, 160, 89, 0.15); padding: 0.25rem 0.6rem; border-radius: 4px;">INR (₹)</span>
                     </div>
-                    <div style="position: relative; height: 260px; width: 100%;">
+                    <div style="position: relative; height: 270px; width: 100%;">
                         <canvas id="chart-revenue-trend"></canvas>
                     </div>
                 </div>
@@ -725,11 +774,42 @@
                 <!-- Chart 2: Category Breakdown -->
                 <div style="background: var(--bg-card); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
-                        <h4 style="font-size: 1rem; font-weight: 600; margin: 0;">👗 Catalog Breakdown by Department</h4>
-                        <span style="font-size: 0.75rem; color: var(--text-muted);">Stock Units</span>
+                        <div>
+                            <h4 style="font-size: 1rem; font-weight: 600; margin: 0;">👗 Catalog Breakdown by Department</h4>
+                            <span style="font-size: 0.74rem; color: var(--text-muted);">Share of garments across collections</span>
+                        </div>
+                        <span style="font-size: 0.78rem; color: #86efac; font-weight: 600;">Stock Units</span>
                     </div>
-                    <div style="position: relative; height: 260px; width: 100%;">
+                    <div style="position: relative; height: 270px; width: 100%;">
                         <canvas id="chart-category-dist"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 3: Order Fulfillment Status Breakdown -->
+                <div style="background: var(--bg-card); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+                        <div>
+                            <h4 style="font-size: 1rem; font-weight: 600; margin: 0;">📦 Order Status & Fulfillment Pipeline</h4>
+                            <span style="font-size: 0.74rem; color: var(--text-muted);">Orders by delivery and processing stage</span>
+                        </div>
+                        <span style="font-size: 0.78rem; color: #93c5fd; font-weight: 600;">Status Units</span>
+                    </div>
+                    <div style="position: relative; height: 270px; width: 100%;">
+                        <canvas id="chart-status-dist"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 4: Top Acquisition Orders Ranking -->
+                <div style="background: var(--bg-card); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+                        <div>
+                            <h4 style="font-size: 1rem; font-weight: 600; margin: 0;">🏆 Top Highest Value Customer Orders</h4>
+                            <span style="font-size: 0.74rem; color: var(--text-muted);">Highest spending client orders</span>
+                        </div>
+                        <span style="font-size: 0.78rem; color: var(--accent-gold); font-weight: 600;">Top Transactions</span>
+                    </div>
+                    <div style="position: relative; height: 270px; width: 100%;">
+                        <canvas id="chart-top-orders"></canvas>
                     </div>
                 </div>
             </div>

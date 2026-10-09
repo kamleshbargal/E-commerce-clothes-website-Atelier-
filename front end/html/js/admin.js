@@ -1097,7 +1097,138 @@ window.deleteCoupon = async function(id) {
 // 8. CHART.JS SALES & CATEGORY ANALYTICS
 // --------------------------------------------------------------------------
 window.revenueChartInstance = null;
+// --------------------------------------------------------------------------
+// 9. CSV EXPORT UTILITIES (EXCEL COMPATIBLE)
+// --------------------------------------------------------------------------
+function downloadCSV(csvContent, filename) {
+    const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", filename);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+
+function escapeCSV(val) {
+    if (val === null || val === undefined) return '""';
+    let str = String(val).replace(/"/g, '""');
+    return `"${str}"`;
+}
+
+window.exportOrdersToCSV = function() {
+    if (!adminOrders || adminOrders.length === 0) {
+        showToast("No customer orders found to export.", "⚠️");
+        return;
+    }
+
+    const headers = [
+        "Order ID",
+        "Date",
+        "Customer Name",
+        "Email",
+        "Phone",
+        "Shipping Address",
+        "Total (INR)",
+        "Status",
+        "Payment Method",
+        "Items Details"
+    ];
+
+    const rows = adminOrders.map(order => {
+        const orderId = order.id ? `#SH-2026-${order.id}` : (order.orderId || `#SH-${order.id}`);
+        const dateStr = order.created_at ? new Date(order.created_at).toISOString().split("T")[0] : "Recent";
+        const customerName = order.customer_name || order.name || "Customer";
+        const email = order.email || "N/A";
+        const phone = order.phone || "N/A";
+        const address = order.address || "N/A";
+        const total = Number(order.total) || 0;
+        const status = order.status || "Pending";
+        const payment = order.payment_method || "Online UPI / COD";
+        
+        let itemsStr = "";
+        if (Array.isArray(order.items)) {
+            itemsStr = order.items.map(it => `${it.name || 'Garment'} (Qty: ${it.quantity || 1}, ₹${it.price || ''})`).join("; ");
+        } else if (typeof order.items === "string") {
+            itemsStr = order.items;
+        }
+
+        return [
+            escapeCSV(orderId),
+            escapeCSV(dateStr),
+            escapeCSV(customerName),
+            escapeCSV(email),
+            escapeCSV(phone),
+            escapeCSV(address),
+            escapeCSV(total),
+            escapeCSV(status),
+            escapeCSV(payment),
+            escapeCSV(itemsStr)
+        ].join(",");
+    });
+
+    const csvContent = [headers.join(","), ...rows].join("\r\n");
+    const today = new Date().toISOString().split("T")[0];
+    downloadCSV(csvContent, `StyleHub_Orders_Report_${today}.csv`);
+    showToast(`Exported ${adminOrders.length} orders to CSV! 📥`, "✓");
+};
+
+window.exportProductsToCSV = function() {
+    if (!adminProducts || adminProducts.length === 0) {
+        showToast("No products found in catalog.", "⚠️");
+        return;
+    }
+
+    const headers = ["Product ID", "Garment Title", "Category", "Price (INR)", "Stock Status"];
+    const rows = adminProducts.map(p => {
+        return [
+            escapeCSV(`#GAR-${p.id}`),
+            escapeCSV(p.name || "Garment"),
+            escapeCSV(p.category || "General"),
+            escapeCSV(Number(p.price) || 0),
+            escapeCSV(p.in_stock === false ? "Out of Stock" : "In Stock")
+        ].join(",");
+    });
+
+    const csvContent = [headers.join(","), ...rows].join("\r\n");
+    const today = new Date().toISOString().split("T")[0];
+    downloadCSV(csvContent, `StyleHub_Catalog_Inventory_${today}.csv`);
+    showToast(`Exported ${adminProducts.length} catalog items to CSV! 📥`, "✓");
+};
+
+window.exportCustomersToCSV = function() {
+    if (!adminUsers || adminUsers.length === 0) {
+        showToast("No registered customer members found.", "⚠️");
+        return;
+    }
+
+    const headers = ["User ID", "Customer Name", "Email", "Registered Date"];
+    const rows = adminUsers.map(u => {
+        const dateStr = u.created_at ? new Date(u.created_at).toISOString().split("T")[0] : (u.date || "Recent");
+        return [
+            escapeCSV(`#USR-${u.id}`),
+            escapeCSV(u.name || "Customer"),
+            escapeCSV(u.email || "N/A"),
+            escapeCSV(dateStr)
+        ].join(",");
+    });
+
+    const csvContent = [headers.join(","), ...rows].join("\r\n");
+    const today = new Date().toISOString().split("T")[0];
+    downloadCSV(csvContent, `StyleHub_Customer_Members_${today}.csv`);
+    showToast(`Exported ${adminUsers.length} members to CSV! 📥`, "✓");
+};
+
+// --------------------------------------------------------------------------
+// 10. ADVANCED INTERACTIVE CHARTS & ANALYTICS SUITE
+// --------------------------------------------------------------------------
+window.revenueChartInstance = null;
 window.categoryChartInstance = null;
+window.statusChartInstance = null;
+window.topOrdersChartInstance = null;
 
 async function renderAdminCharts() {
     if (typeof Chart === "undefined") {
@@ -1107,8 +1238,10 @@ async function renderAdminCharts() {
 
     const revenueCanvas = document.getElementById("chart-revenue-trend");
     const categoryCanvas = document.getElementById("chart-category-dist");
-    if (!revenueCanvas || !categoryCanvas) return;
+    const statusCanvas = document.getElementById("chart-status-dist");
+    const topOrdersCanvas = document.getElementById("chart-top-orders");
 
+    // Fetch live stats from API if available
     let statsData = null;
     try {
         const statsRes = await fetch(`${API_BASE}/api/admin/stats`);
@@ -1119,131 +1252,311 @@ async function renderAdminCharts() {
         console.warn("Could not fetch stats for charts:", e);
     }
 
-    // Chart 1: Revenue Trend
-    const recentOrders = [...adminOrders].slice(0, 8).reverse();
-    const orderLabels = recentOrders.length > 0
-        ? recentOrders.map(o => `#SH-${o.id}`)
-        : ["#SH-1", "#SH-2", "#SH-3", "#SH-4", "#SH-5"];
-    const orderAmounts = recentOrders.length > 0
-        ? recentOrders.map(o => Number(o.total) || 0)
-        : [1899, 3499, 2199, 4999, 2899];
+    // 1. Calculate and update Analytics KPI Summary cards
+    const totalRev = adminOrders.reduce((sum, o) => sum + (Number(o.total) || 0), 0);
+    const orderCount = adminOrders.length || 1;
+    const aov = Math.round(totalRev / orderCount);
+    const aovEl = document.getElementById("analytics-aov-val");
+    if (aovEl) aovEl.textContent = `₹${(aov || 1899).toLocaleString()}`;
 
-    if (window.revenueChartInstance) {
-        window.revenueChartInstance.destroy();
-    }
+    const deliveredOrShipped = adminOrders.filter(o => 
+        ["delivered", "shipped"].includes((o.status || "").toLowerCase())
+    ).length;
+    const fulfillmentRate = adminOrders.length > 0 
+        ? Math.round((deliveredOrShipped / adminOrders.length) * 100) 
+        : 100;
+    const fulfillEl = document.getElementById("analytics-fulfillment-val");
+    if (fulfillEl) fulfillEl.textContent = `${fulfillmentRate}%`;
 
-    const revCtx = revenueCanvas.getContext("2d");
-    window.revenueChartInstance = new Chart(revCtx, {
-        type: "line",
-        data: {
-            labels: orderLabels,
-            datasets: [{
-                label: "Order Revenue (₹)",
-                data: orderAmounts,
-                borderColor: "#c5a059",
-                backgroundColor: "rgba(197, 160, 89, 0.15)",
-                borderWidth: 2.5,
-                tension: 0.35,
-                fill: true,
-                pointBackgroundColor: "#c5a059",
-                pointBorderColor: "#ffffff",
-                pointBorderWidth: 2,
-                pointRadius: 4,
-                pointHoverRadius: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return ` Revenue: ₹${Number(context.parsed.y).toLocaleString()}`;
+    const catalogCount = adminProducts.length || (statsData && statsData.total_products) || 22;
+    const catalogEl = document.getElementById("analytics-catalog-val");
+    if (catalogEl) catalogEl.textContent = `${catalogCount} Pieces`;
+
+    // Calculate Top Department
+    const deptCount = {};
+    adminProducts.forEach(p => {
+        const cat = p.category || "General";
+        deptCount[cat] = (deptCount[cat] || 0) + 1;
+    });
+    const sortedDepts = Object.entries(deptCount).sort((a, b) => b[1] - a[1]);
+    const topDept = sortedDepts.length > 0 ? sortedDepts[0][0] : "Women";
+    const deptEl = document.getElementById("analytics-top-dept-val");
+    if (deptEl) deptEl.textContent = topDept;
+
+    // ----------------------------------------------------------------------
+    // Chart 1: Revenue Progression per Order (Line Chart)
+    // ----------------------------------------------------------------------
+    if (revenueCanvas) {
+        const recentOrders = [...adminOrders].slice(0, 10).reverse();
+        const orderLabels = recentOrders.length > 0
+            ? recentOrders.map(o => `#SH-${o.id}`)
+            : ["#SH-1", "#SH-2", "#SH-3", "#SH-4", "#SH-5", "#SH-6"];
+        const orderAmounts = recentOrders.length > 0
+            ? recentOrders.map(o => Number(o.total) || 0)
+            : [1599, 2499, 3199, 2899, 4599, 3799];
+
+        if (window.revenueChartInstance) {
+            window.revenueChartInstance.destroy();
+        }
+
+        const revCtx = revenueCanvas.getContext("2d");
+        const revGradient = revCtx.createLinearGradient(0, 0, 0, 260);
+        revGradient.addColorStop(0, "rgba(197, 160, 89, 0.45)");
+        revGradient.addColorStop(1, "rgba(197, 160, 89, 0.02)");
+
+        window.revenueChartInstance = new Chart(revCtx, {
+            type: "line",
+            data: {
+                labels: orderLabels,
+                datasets: [{
+                    label: "Order Revenue",
+                    data: orderAmounts,
+                    borderColor: "#c5a059",
+                    backgroundColor: revGradient,
+                    borderWidth: 2.8,
+                    tension: 0.38,
+                    fill: true,
+                    pointBackgroundColor: "#c5a059",
+                    pointBorderColor: "#ffffff",
+                    pointBorderWidth: 2,
+                    pointRadius: 4.5,
+                    pointHoverRadius: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return ` Revenue: ₹${Number(context.parsed.y).toLocaleString()}`;
+                            }
                         }
                     }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: value => "₹" + Number(value).toLocaleString(),
-                        font: { size: 11 }
-                    },
-                    grid: { color: "rgba(0, 0, 0, 0.05)" }
                 },
-                x: {
-                    grid: { display: false },
-                    ticks: { font: { size: 11 } }
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: value => "₹" + Number(value).toLocaleString(),
+                            font: { size: 11 }
+                        },
+                        grid: { color: "rgba(255, 255, 255, 0.07)" }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 11 } }
+                    }
                 }
             }
-        }
-    });
-
-    // Chart 2: Category Breakdown
-    let catLabels = [];
-    let catCounts = [];
-    if (statsData && Array.isArray(statsData.categories) && statsData.categories.length > 0) {
-        catLabels = statsData.categories.map(c => c.category);
-        catCounts = statsData.categories.map(c => c.count);
-    } else if (adminProducts && adminProducts.length > 0) {
-        const countsMap = {};
-        adminProducts.forEach(p => {
-            countsMap[p.category] = (countsMap[p.category] || 0) + 1;
         });
-        catLabels = Object.keys(countsMap);
-        catCounts = Object.values(countsMap);
-    } else {
-        catLabels = ["Men", "Women", "Unisex", "Footwear", "Jewellery"];
-        catCounts = [8, 10, 4, 3, 3];
     }
 
-    if (window.categoryChartInstance) {
-        window.categoryChartInstance.destroy();
-    }
+    // ----------------------------------------------------------------------
+    // Chart 2: Category Breakdown (Doughnut Chart)
+    // ----------------------------------------------------------------------
+    if (categoryCanvas) {
+        let catLabels = [];
+        let catCounts = [];
+        if (statsData && Array.isArray(statsData.categories) && statsData.categories.length > 0) {
+            catLabels = statsData.categories.map(c => c.category);
+            catCounts = statsData.categories.map(c => c.count);
+        } else if (adminProducts && adminProducts.length > 0) {
+            const countsMap = {};
+            adminProducts.forEach(p => {
+                const c = p.category || "General";
+                countsMap[c] = (countsMap[c] || 0) + 1;
+            });
+            catLabels = Object.keys(countsMap);
+            catCounts = Object.values(countsMap);
+        } else {
+            catLabels = ["Women", "Men", "Unisex", "Footwear", "Winter"];
+            catCounts = [10, 8, 4, 3, 3];
+        }
 
-    const catCtx = categoryCanvas.getContext("2d");
-    window.categoryChartInstance = new Chart(catCtx, {
-        type: "doughnut",
-        data: {
-            labels: catLabels,
-            datasets: [{
-                data: catCounts,
-                backgroundColor: [
-                    "#c5a059",
-                    "#3b82f6",
-                    "#10b981",
-                    "#8b5cf6",
-                    "#f59e0b",
-                    "#ec4899",
-                    "#6366f1",
-                    "#14b8a6"
-                ],
-                borderWidth: 2,
-                borderColor: "#ffffff"
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: "right",
-                    labels: { boxWidth: 12, font: { size: 11 } }
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return ` ${context.label}: ${context.parsed} pieces`;
+        if (window.categoryChartInstance) {
+            window.categoryChartInstance.destroy();
+        }
+
+        const catCtx = categoryCanvas.getContext("2d");
+        window.categoryChartInstance = new Chart(catCtx, {
+            type: "doughnut",
+            data: {
+                labels: catLabels,
+                datasets: [{
+                    data: catCounts,
+                    backgroundColor: [
+                        "#c5a059",
+                        "#3b82f6",
+                        "#10b981",
+                        "#8b5cf6",
+                        "#f59e0b",
+                        "#ec4899",
+                        "#6366f1",
+                        "#14b8a6"
+                    ],
+                    borderWidth: 2,
+                    borderColor: "#182029"
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: "right",
+                        labels: { boxWidth: 12, font: { size: 11 }, color: "#cbd5e1" }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return ` ${context.label}: ${context.parsed} pieces`;
+                            }
                         }
                     }
-                }
-            },
-            cutout: "68%"
+                },
+                cutout: "66%"
+            }
+        });
+    }
+
+    // ----------------------------------------------------------------------
+    // Chart 3: Order Fulfillment Pipeline (Bar Chart)
+    // ----------------------------------------------------------------------
+    if (statusCanvas) {
+        const statuses = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"];
+        const statusCounts = statuses.map(st => {
+            return adminOrders.filter(o => (o.status || "Pending").toLowerCase() === st.toLowerCase()).length;
+        });
+
+        // If no orders yet, display realistic preview numbers
+        const chartCounts = adminOrders.length > 0 ? statusCounts : [2, 1, 4, 8, 0];
+
+        if (window.statusChartInstance) {
+            window.statusChartInstance.destroy();
         }
-    });
+
+        const statusCtx = statusCanvas.getContext("2d");
+        window.statusChartInstance = new Chart(statusCtx, {
+            type: "bar",
+            data: {
+                labels: statuses,
+                datasets: [{
+                    label: "Orders Count",
+                    data: chartCounts,
+                    backgroundColor: [
+                        "rgba(245, 158, 11, 0.75)", // Pending
+                        "rgba(59, 130, 246, 0.75)",  // Processing
+                        "rgba(139, 92, 246, 0.75)",  // Shipped
+                        "rgba(16, 185, 129, 0.75)",  // Delivered
+                        "rgba(239, 68, 68, 0.75)"    // Cancelled
+                    ],
+                    borderRadius: 6,
+                    borderWidth: 1.5,
+                    borderColor: [
+                        "#f59e0b",
+                        "#3b82f6",
+                        "#8b5cf6",
+                        "#10b981",
+                        "#ef4444"
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return ` ${context.label}: ${context.parsed.y} orders`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1, font: { size: 11 } },
+                        grid: { color: "rgba(255, 255, 255, 0.07)" }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 11 } }
+                    }
+                }
+            }
+        });
+    }
+
+    // ----------------------------------------------------------------------
+    // Chart 4: Top Highest Value Customer Orders (Horizontal Bar Chart)
+    // ----------------------------------------------------------------------
+    if (topOrdersCanvas) {
+        const sortedOrders = [...adminOrders]
+            .sort((a, b) => (Number(b.total) || 0) - (Number(a.total) || 0))
+            .slice(0, 5);
+
+        const topLabels = sortedOrders.length > 0
+            ? sortedOrders.map(o => `#SH-${o.id} (${(o.customer_name || 'Client').split(' ')[0]})`)
+            : ["#SH-104 (Rohan)", "#SH-108 (Pooja)", "#SH-101 (Amit)", "#SH-112 (Priya)", "#SH-105 (Kabir)"];
+        const topAmounts = sortedOrders.length > 0
+            ? sortedOrders.map(o => Number(o.total) || 0)
+            : [5499, 4899, 3799, 2999, 2199];
+
+        if (window.topOrdersChartInstance) {
+            window.topOrdersChartInstance.destroy();
+        }
+
+        const topCtx = topOrdersCanvas.getContext("2d");
+        window.topOrdersChartInstance = new Chart(topCtx, {
+            type: "bar",
+            data: {
+                labels: topLabels,
+                datasets: [{
+                    axis: "y",
+                    label: "Order Value (₹)",
+                    data: topAmounts,
+                    backgroundColor: "rgba(197, 160, 89, 0.75)",
+                    borderColor: "#c5a059",
+                    borderWidth: 1.5,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                indexAxis: "y",
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return ` Amount: ₹${Number(context.parsed.x).toLocaleString()}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: value => "₹" + Number(value).toLocaleString(),
+                            font: { size: 11 }
+                        },
+                        grid: { color: "rgba(255, 255, 255, 0.07)" }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { font: { size: 11 } }
+                    }
+                }
+            }
+        });
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
