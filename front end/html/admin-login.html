@@ -242,10 +242,7 @@
             : (window.location.origin.startsWith("http") ? window.location.origin : "http://127.0.0.1:5000");
         const DEFAULT_PASSCODE = "atelier2026";
 
-        // Check if already authenticated
-        if (sessionStorage.getItem("stylehub_admin_auth") === "true") {
-            window.location.href = "admin.html";
-        }
+        // Always display the login form on this page
 
         function switchLoginMode(mode) {
             const tabPass = document.getElementById("tab-passcode-btn");

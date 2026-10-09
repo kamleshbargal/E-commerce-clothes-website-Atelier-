@@ -229,7 +229,7 @@ function initMobileMenu() {
     });
 }
 
-// Update user header button and admin badge based on session
+// Update user header button based on session
 function initUserHeaderBtn() {
     const userBtn = document.getElementById("header-user-btn");
     const user = JSON.parse(localStorage.getItem("stylehub_user"));
