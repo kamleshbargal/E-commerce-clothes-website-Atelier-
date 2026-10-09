@@ -57,6 +57,9 @@
 
             <nav class="nav-desktop" aria-label="Main Navigation">
                 <a class="nav-link active" href="index.html">Collection</a>
+                <a class="nav-link nav-ai-link" href="#ai-fashion-studio">
+                    <span class="nav-ai-sparkle">✨</span> AI Stylist Studio <span class="nav-ai-glow-tag">AI LIVE</span>
+                </a>
                 <a class="nav-link" href="#categories">Categories</a>
                 <a class="nav-link" href="#outfit-bundle">Style The Look</a>
                 <a class="nav-link" href="product.html">Catalog</a>
@@ -142,6 +145,73 @@
                 <button type="button" class="slider-arrow-btn" onclick="changeHeroSlide(1)" aria-label="Next Slide">›</button>
             </div>
             <div class="hero-slider-dots" id="hero-slider-dots"></div>
+        </section>
+
+        <!-- =====================================================================
+             ATELIER NEURAL FASHION STUDIO (FLAGSHIP AI UI/UX SHOWCASE)
+             ===================================================================== -->
+        <section class="ai-studio-flagship" id="ai-fashion-studio" aria-label="Atelier AI Fashion Studio">
+            <div class="ai-studio-ambient-glow"></div>
+            <div class="ai-studio-container">
+                <!-- Top Floating Badge Row -->
+                <div class="ai-studio-header-pill">
+                    <span class="ai-orbit-pulse"></span>
+                    <span class="ai-pill-text">👑 ATELIER NEURAL FASHION INTELLIGENCE • 2026 DROP</span>
+                    <span class="ai-pill-tag">⚡ Live Stylist Active</span>
+                </div>
+
+                <!-- Main Headline -->
+                <h2 class="ai-studio-title">
+                    Don't browse through hundreds of pieces.<br>
+                    <span class="gradient-text-gold">Let AI curate your bespoke look in seconds.</span>
+                </h2>
+                <p class="ai-studio-desc">
+                    Describe your occasion, vibe, or budget — our AI fashion stylist instantly matches complementary garments, textures, and footwear from our live vault.
+                </p>
+
+                <!-- Futuristic Glassmorphic AI Prompt Box -->
+                <div class="ai-studio-console">
+                    <div class="ai-input-wrapper">
+                        <div class="ai-sparkle-icon-wrap">
+                            <span class="ai-sparkle-emoji">✨</span>
+                        </div>
+                        <input type="text" id="ai-hero-input" class="ai-studio-search-field" placeholder="Ask AI: e.g. 'Luxury party look for men under ₹2500' or 'Silk dress for date night'..." autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault(); handleHeroAiClick();}">
+                        <button type="button" class="ai-studio-generate-btn" id="btn-hero-ai-generate" onclick="handleHeroAiClick()">
+                            <span>Curate My Look</span>
+                            <span class="btn-arrow-icon">➔</span>
+                        </button>
+                    </div>
+
+                    <!-- Interactive Prompt Chips Carousel -->
+                    <div class="ai-studio-chips-row">
+                        <span class="ai-chips-title">🔥 Trending AI Prompts:</span>
+                        <button type="button" class="ai-trending-chip" onclick="handleHeroChipClick('Suggest a luxury party look for men')">👔 Party & Gala Look</button>
+                        <button type="button" class="ai-trending-chip" onclick="handleHeroChipClick('Show me elegant women silk dresses')">👗 Silk Evening Edit</button>
+                        <button type="button" class="ai-trending-chip" onclick="handleHeroChipClick('Curate a complete outfit under ₹2000')">💰 Outfits Under ₹2,000</button>
+                        <button type="button" class="ai-trending-chip" onclick="handleHeroChipClick('What matches with blue denim jeans')">🧥 Complete The Look</button>
+                        <button type="button" class="ai-trending-chip" onclick="handleHeroChipClick('Show me comfortable summer linen shirts')">🌿 Italian Linen Edit</button>
+                    </div>
+                </div>
+
+                <!-- 3-Pillar AI Feature Teasers -->
+                <div class="ai-features-grid">
+                    <div class="ai-feature-card">
+                        <div class="ai-feat-icon">🎯</div>
+                        <h4>Occasion & Vibe Matching</h4>
+                        <p>Smart context recognition understands weddings, dates, or travel and selects matching fabric weights.</p>
+                    </div>
+                    <div class="ai-feature-card">
+                        <div class="ai-feat-icon">💎</div>
+                        <h4>Live Vault Coordination</h4>
+                        <p>Direct integration with our MySQL stock inventory — no out-of-stock heartbreak, only ready-to-ship couture.</p>
+                    </div>
+                    <div class="ai-feature-card">
+                        <div class="ai-feat-icon">⚡</div>
+                        <h4>1-Click Cart Curation</h4>
+                        <p>Review photo, fabric, and pricing details right inside the chat and add the curated look in one single tap.</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- Trust Pillars Strip -->

@@ -486,6 +486,29 @@
         }
     };
 
+    window.openAiChatDrawer = function() {
+        const chatBox = document.getElementById("atelier-ai-chatbox");
+        if (chatBox) {
+            chatBox.classList.add("open");
+            isChatOpen = true;
+            document.getElementById("ai-user-input")?.focus();
+        }
+    };
+
+    window.handleHeroAiClick = function() {
+        const heroInput = document.getElementById("ai-hero-input");
+        const query = heroInput ? heroInput.value.trim() : "";
+        window.openAiChatDrawer();
+        if (query) {
+            window.sendStylistQuery(query);
+        }
+    };
+
+    window.handleHeroChipClick = function(promptText) {
+        window.openAiChatDrawer();
+        window.sendStylistQuery(promptText);
+    };
+
     // Send query to AI backend
     window.sendStylistQuery = async function(query) {
         const input = document.getElementById("ai-user-input");
