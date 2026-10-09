@@ -925,6 +925,169 @@ def add_review():
         connection.close()
 
 
+# --------------------------------------------------------------------------
+# AI FASHION STYLIST & OUTFIT ADVISOR API
+# --------------------------------------------------------------------------
+@app.route("/api/ai/stylist", methods=["POST"])
+def ai_fashion_stylist():
+    import json
+    import re
+    import urllib.request
+
+    data = request.get_json(silent=True) or {}
+    user_query = str(data.get("message", "")).strip()
+
+    if not user_query:
+        return jsonify({
+            "reply": "Namaste! ✨ Main hoon aapka Atelier AI Fashion Stylist. Aap aaj kis occasion ya vibe ke liye outfit dhoondh rahe hain? Jaise: 'Party wear under 2000' ya 'Summer look'.",
+            "products": [],
+            "suggested_chips": ["✨ Party & Wedding", "👔 Men's Essentials", "👗 Women Chic", "💰 Under ₹2,000"]
+        })
+
+    # Fetch catalog from database or fallback memory list
+    try:
+        all_prods = [dict(p) for p in get_all_products()]
+    except Exception:
+        all_prods = products
+
+    query_lower = user_query.lower()
+
+    # Budget filter detection (e.g. under 2000, below 1500, < 3000)
+    budget_limit = None
+    budget_match = re.search(r'(?:under|below|<|upto|budget of|within|ke andar)\s*(?:₹|rs\.?|inr)?\s*(\d+)', query_lower)
+    if budget_match:
+        budget_limit = int(budget_match.group(1))
+
+    # Gender / Department detection
+    gender = None
+    if any(w in query_lower for w in ["men", "man", "male", "ladka", "ladke", "boy", "gents"]):
+        gender = "Men"
+    elif any(w in query_lower for w in ["women", "woman", "female", "ladki", "girl", "ladies"]):
+        gender = "Women"
+    elif any(w in query_lower for w in ["kid", "child", "children", "baby", "bacche"]):
+        gender = "Kids"
+
+    # Specific category / occasion flags
+    is_party = any(w in query_lower for w in ["party", "wedding", "shaadi", "festive", "reception", "evening", "cocktail", "club", "dinner"])
+    is_winter = any(w in query_lower for w in ["winter", "cold", "jacket", "coat", "hoodie", "sweater", "warm", "puffer"])
+    is_casual = any(w in query_lower for w in ["casual", "daily", "regular", "everyday", "t-shirt", "tee", "jeans", "denim", "cotton"])
+    is_footwear = any(w in query_lower for w in ["shoe", "shoes", "sneaker", "sneakers", "footwear", "sandal", "sandals", "boots"])
+    is_ethnic = any(w in query_lower for w in ["saree", "kurta", "kurti", "ethnic", "traditional", "lehenga", "anarkali"])
+    is_formal = any(w in query_lower for w in ["formal", "office", "interview", "suit", "blazer", "shirt", "work"])
+
+    # Score and filter matching catalog garments
+    scored_products = []
+    for p in all_prods:
+        p_name = str(p.get("name", "")).lower()
+        p_cat = str(p.get("category", "")).lower()
+        p_price = float(p.get("price", 0))
+
+        if budget_limit and p_price > budget_limit:
+            continue
+
+        score = 0
+        if gender:
+            if gender.lower() in p_cat or gender.lower() in p_name:
+                score += 5
+            elif "unisex" in p_cat:
+                score += 3
+            else:
+                score -= 3
+
+        if is_party and any(w in (p_name + " " + p_cat) for w in ["suit", "blazer", "dress", "jacket", "silk", "gown", "varsity", "festive"]):
+            score += 6
+        if is_winter and any(w in (p_name + " " + p_cat) for w in ["jacket", "hoodie", "sweater", "fleece", "knit", "puffer", "wool"]):
+            score += 6
+        if is_casual and any(w in (p_name + " " + p_cat) for w in ["t-shirt", "jeans", "canvas", "cotton", "casual", "shirt", "tee"]):
+            score += 5
+        if is_footwear and any(w in (p_name + " " + p_cat) for w in ["shoe", "sneaker", "footwear", "sandal", "runner"]):
+            score += 8
+        if is_ethnic and any(w in (p_name + " " + p_cat) for w in ["saree", "kurta", "kurti", "sharara", "ethnic"]):
+            score += 8
+        if is_formal and any(w in (p_name + " " + p_cat) for w in ["shirt", "suit", "blazer", "formal", "trench"]):
+            score += 7
+
+        for word in query_lower.split():
+            if len(word) > 3 and (word in p_name or word in p_cat):
+                score += 3
+
+        if score > 0 or not (gender or is_party or is_winter or is_casual or is_footwear or is_ethnic or is_formal or budget_limit):
+            scored_products.append((score, p))
+
+    scored_products.sort(key=lambda x: (-x[0], x[1].get("price", 0)))
+    top_items = [p for _, p in scored_products[:4]]
+
+    if not top_items:
+        top_items = all_prods[:3]
+
+    # Bespoke Luxury Stylist Advice Generation
+    if is_party:
+        stylist_intro = "Grand occasions call for statement luxury! ✨ Yahan Atelier ke top party-ready pieces hain jo aapko ek royal aur sophisticated look denge."
+        styling_tips = "💡 Stylist Tip: Minimal gold jewelry ya crisp footwear ke sath pair karein for maximum elegance."
+        suggested_chips = ["Complete with Shoes", "Show Under ₹2,000", "More Festive Outfits"]
+    elif is_winter:
+        stylist_intro = "Cozy comfort meets high couture! ❄️ Yahan hamari premium winter outerwear collection hai jo style ke sath pura warmth deti hai."
+        styling_tips = "💡 Stylist Tip: Layering is key! Is jacket ke andar ek clean tee ya hoodie pheniye for a sharp streetwear silhouette."
+        suggested_chips = ["Under ₹2,500", "Show Matching Denims", "Casual Sweaters"]
+    elif is_footwear:
+        stylist_intro = "Shoes define your entire presence! 👟 Yahan hamari top handcrafted footwear collection hai."
+        styling_tips = "💡 Stylist Tip: Chinos ya relaxed cropped denim ke sath wear karein for an effortless modern vibe."
+        suggested_chips = ["Casual Sneakers", "Party Footwear", "Under ₹1,500"]
+    elif is_ethnic:
+        stylist_intro = "Pure Indian heritage craftsmanship! 🪔 Yeh festive aur cultural occasions ke liye sabse stunning handcrafted pieces hain."
+        styling_tips = "💡 Stylist Tip: Traditional juttis aur subtle accessories ke sath match karein for complete royal grandeur."
+        suggested_chips = ["Festive Offers", "Kurta Sets", "Under ₹3,000"]
+    elif budget_limit:
+        stylist_intro = f"Luxury within your budget! 💰 Aapke ₹{budget_limit:,} budget ke mutabiq sabse premium curated garments yeh rahe:"
+        styling_tips = "💡 Stylist Tip: Seasonal coupon codes (jaise DIWALI25) use karke aap extra 25% discount bhi avail kar sakte hain!"
+        suggested_chips = ["Apply DIWALI25 Coupon", "Show Men Outfits", "Show Women Outfits"]
+    else:
+        stylist_intro = "A timeless look is all about tailored silhouette and premium fabrics. ✨ Maine aapke choice ke basis par StyleHub catalog se yeh pieces curate kiye hain:"
+        styling_tips = "💡 Stylist Tip: Monochromatic colors (black, ivory, navy) pair wonderfully with versatile streetwear."
+        suggested_chips = ["✨ Party Look", "👔 Men's Classics", "👗 Women Chic", "💰 Under ₹2,000"]
+
+    # Optional Gemini AI Enhancer (If GEMINI_API_KEY is present in environment)
+    gemini_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+    if gemini_key:
+        try:
+            gemini_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={gemini_key}"
+            payload = {
+                "contents": [{
+                    "parts": [{
+                        "text": f"You are an elite, polite luxury fashion stylist for 'StyleHub Haute Atelier'. "
+                                f"Respond in natural, charming Hinglish (Hindi + English) in 2-3 sentences max. "
+                                f"Customer asked: '{user_query}'. "
+                                f"We recommended these pieces from our store: {[p.get('name') for p in top_items]}. "
+                                f"Give 1 quick styling advice on how to wear them."
+                    }]
+                }]
+            }
+            req = urllib.request.Request(gemini_url, data=json.dumps(payload).encode("utf-8"), headers={"Content-Type": "application/json"})
+            with urllib.request.urlopen(req, timeout=2.5) as response:
+                ai_data = json.loads(response.read().decode("utf-8"))
+                gemini_text = ai_data["candidates"][0]["content"]["parts"][0]["text"].strip()
+                if gemini_text:
+                    stylist_intro = gemini_text
+        except Exception as ex:
+            pass  # Seamlessly keep the built-in bespoke stylist response
+
+    reply_text = f"{stylist_intro}\n\n{styling_tips}"
+
+    return jsonify({
+        "reply": reply_text,
+        "products": [
+            {
+                "id": p.get("id"),
+                "name": p.get("name"),
+                "category": p.get("category"),
+                "price": p.get("price"),
+                "image": p.get("image")
+            } for p in top_items
+        ],
+        "suggested_chips": suggested_chips
+    })
+
+
 @app.route("/")
 def serve_index():
     if os.path.isdir(FRONTEND_DIR):

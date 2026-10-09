@@ -300,5 +300,15 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("#login-form, #register-form").forEach(form => {
         form.addEventListener("submit", submitAuthForm);
     });
+
+    // Auto-load Atelier AI Fashion Stylist Widget on customer storefront
+    if (!window.location.pathname.includes("admin") && !window.location.href.includes("admin")) {
+        if (!document.querySelector('script[src*="ai-stylist.js"]')) {
+            const stylistScript = document.createElement("script");
+            stylistScript.src = "js/ai-stylist.js";
+            stylistScript.defer = true;
+            document.body.appendChild(stylistScript);
+        }
+    }
 });
 
