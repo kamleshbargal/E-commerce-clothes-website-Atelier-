@@ -29,8 +29,8 @@ function showToast(message, icon = "✨") {
     }, 3200);
 }
 
-// Update header badges (Cart & Wishlist)
-function updateHeaderBadges() {
+// Update header badges (Cart & Wishlist) with optional bounce animation
+function updateHeaderBadges(triggerBounce = false) {
     const cart = JSON.parse(localStorage.getItem("stylehub_cart")) || 
                  JSON.parse(localStorage.getItem("cart")) || [];
     const wishlist = JSON.parse(localStorage.getItem("stylehub_wishlist")) || [];
@@ -40,6 +40,12 @@ function updateHeaderBadges() {
     cartBadges.forEach(badge => {
         badge.textContent = totalQty;
         badge.style.display = totalQty > 0 ? "flex" : "none";
+        if (triggerBounce) {
+            badge.classList.remove("badge-bounce");
+            void badge.offsetWidth;
+            badge.classList.add("badge-bounce");
+            setTimeout(() => badge.classList.remove("badge-bounce"), 600);
+        }
     });
 
     const wishlistBadges = document.querySelectorAll(".wishlist-count-badge");
@@ -47,6 +53,127 @@ function updateHeaderBadges() {
         badge.textContent = wishlist.length;
         badge.style.display = wishlist.length > 0 ? "flex" : "none";
     });
+}
+
+// --------------------------------------------------------------------------
+// ATELIER HAUTE LUXURY MOTION & ANIMATION SYSTEM
+// --------------------------------------------------------------------------
+
+// 1. Scroll Progress Bar
+function initScrollProgressBar() {
+    let bar = document.getElementById("scroll-progress-bar");
+    if (!bar) {
+        bar = document.createElement("div");
+        bar.id = "scroll-progress-bar";
+        document.body.appendChild(bar);
+    }
+
+    const updateProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        bar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+    };
+
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    updateProgress();
+}
+
+// 2. Scroll-Driven Cinematic Entrance Reveal
+function initScrollReveal() {
+    const targetSelectors = [
+        ".ai-studio-flagship",
+        ".ai-feature-card",
+        ".category-tile",
+        ".editorial-banner-card",
+        ".outfit-bundle-card",
+        ".testimonial-card",
+        ".perk-item",
+        ".product-card",
+        ".section-header"
+    ];
+
+    targetSelectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach((el, index) => {
+            if (!el.classList.contains("reveal-on-scroll")) {
+                el.classList.add("reveal-on-scroll");
+                el.classList.add(`stagger-${(index % 4) + 1}`);
+            }
+        });
+    });
+
+    if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("revealed");
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, {
+            root: null,
+            rootMargin: "0px 0px -40px 0px",
+            threshold: 0.1
+        });
+
+        document.querySelectorAll(".reveal-on-scroll:not(.revealed)").forEach(el => {
+            observer.observe(el);
+        });
+    } else {
+        // Fallback for older browsers
+        document.querySelectorAll(".reveal-on-scroll").forEach(el => el.classList.add("revealed"));
+    }
+}
+
+// 3. Dynamic Radial Cursor Lighting Sheen on Cards
+function initMouseLightingEffect() {
+    const cards = document.querySelectorAll(".product-card, .editorial-banner-card, .ai-studio-console");
+    cards.forEach(card => {
+        card.addEventListener("mousemove", e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty("--mouse-x", `${x}px`);
+            card.style.setProperty("--mouse-y", `${y}px`);
+        }, { passive: true });
+    });
+}
+
+// 4. Cart Badge Elastic Bounce Animation
+function triggerCartBadgeBounce() {
+    const badges = document.querySelectorAll(".cart-count-badge");
+    badges.forEach(badge => {
+        badge.classList.remove("badge-bounce");
+        void badge.offsetWidth;
+        badge.classList.add("badge-bounce");
+        setTimeout(() => badge.classList.remove("badge-bounce"), 600);
+    });
+}
+
+// 5. Floating Interactive Particles (+1 🛍️, ❤️, etc.)
+function triggerFloatingParticle(event, text = "+1 ✨") {
+    let clientX = window.innerWidth - 60;
+    let clientY = 40;
+
+    if (event && event.clientX && event.clientY) {
+        clientX = event.clientX;
+        clientY = event.clientY;
+    } else if (event && event.target) {
+        const rect = event.target.getBoundingClientRect();
+        clientX = rect.left + rect.width / 2;
+        clientY = rect.top;
+    }
+
+    const particle = document.createElement("div");
+    particle.className = "floating-add-particle";
+    particle.textContent = text;
+    particle.style.left = `${clientX}px`;
+    particle.style.top = `${clientY}px`;
+    document.body.appendChild(particle);
+
+    setTimeout(() => {
+        particle.remove();
+    }, 900);
 }
 
 // Header scroll effect
@@ -296,6 +423,11 @@ document.addEventListener("DOMContentLoaded", () => {
     initMobileMenu();
     initUserHeaderBtn();
     initAnnouncementTicker();
+
+    // Initialize Haute Luxury Motion System
+    initScrollProgressBar();
+    initScrollReveal();
+    initMouseLightingEffect();
 
     document.querySelectorAll("#login-form, #register-form").forEach(form => {
         form.addEventListener("submit", submitAuthForm);

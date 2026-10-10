@@ -349,7 +349,7 @@ function getCart() {
 function saveCart(cart) {
     localStorage.setItem("stylehub_cart", JSON.stringify(cart));
     localStorage.setItem("cart", JSON.stringify(cart));
-    if (typeof updateHeaderBadges === "function") updateHeaderBadges();
+    if (typeof updateHeaderBadges === "function") updateHeaderBadges(true);
     renderCartDrawer();
 }
 
@@ -477,11 +477,12 @@ function renderProducts() {
         return;
     }
 
-    container.innerHTML = filtered.map(product => {
+    container.innerHTML = filtered.map((product, index) => {
         const isWishlisted = wishlist.includes(product.id);
         const isLowStock = product.stock !== undefined && product.stock > 0 && product.stock <= 5;
+        const staggerDelay = (index % 4) * 0.08;
         return `
-            <article class="product-card" data-id="${product.id}">
+            <article class="product-card reveal-on-scroll" data-id="${product.id}" style="transition-delay: ${staggerDelay}s;">
                 <div class="product-thumb-wrap">
                     <img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=700&q=85';">
                     ${product.tag ? `<span class="badge-tag ${product.tagClass || 'new'}">${product.tag}</span>` : ''}
@@ -510,7 +511,7 @@ function renderProducts() {
                             <button type="button" class="btn-whatsapp-card" onclick="orderOnWhatsApp(${product.id}, event)" title="Order directly on WhatsApp">
                                 💬 WhatsApp
                             </button>
-                            <button class="btn-add-bag" onclick="quickAddToCart(${product.id})">
+                            <button class="btn-add-bag" onclick="quickAddToCart(${product.id}, event)">
                                 + Add
                             </button>
                         </div>
@@ -519,6 +520,10 @@ function renderProducts() {
             </article>
         `;
     }).join("");
+
+    // Re-observe revealed elements and re-bind interactive lighting sheen
+    if (typeof initScrollReveal === "function") initScrollReveal();
+    if (typeof initMouseLightingEffect === "function") initMouseLightingEffect();
 }
 
 function resetFilters() {
@@ -541,7 +546,14 @@ function resetFilters() {
 // WISHLIST LOGIC
 // --------------------------------------------------------------------------
 function toggleWishlist(productId, event) {
-    if (event) event.stopPropagation();
+    if (event) {
+        event.stopPropagation();
+        const btn = event.currentTarget;
+        if (btn) {
+            btn.classList.add("heart-popping");
+            setTimeout(() => btn.classList.remove("heart-popping"), 420);
+        }
+    }
     let wishlist = getWishlist();
     const product = catalogProducts.find(p => p.id === productId);
     const index = wishlist.indexOf(productId);
@@ -549,9 +561,11 @@ function toggleWishlist(productId, event) {
     if (index > -1) {
         wishlist.splice(index, 1);
         if (typeof showToast === "function") showToast(`Removed from your wishlist`, "♡");
+        if (typeof triggerFloatingParticle === "function") triggerFloatingParticle(event, "💔");
     } else {
         wishlist.push(productId);
         if (typeof showToast === "function") showToast(`Added to your wishlist`, "♥");
+        if (typeof triggerFloatingParticle === "function") triggerFloatingParticle(event, "❤️");
     }
     saveWishlist(wishlist);
 }
@@ -559,9 +573,12 @@ function toggleWishlist(productId, event) {
 // --------------------------------------------------------------------------
 // CART DRAWER & LOGIC
 // --------------------------------------------------------------------------
-function quickAddToCart(productId) {
+function quickAddToCart(productId, event) {
     const product = catalogProducts.find(p => p.id === productId);
     if (!product) return;
+    if (typeof triggerFloatingParticle === "function") {
+        triggerFloatingParticle(event, "+1 🛍️");
+    }
     const defaultSize = (product.sizes && product.sizes.length) ? product.sizes[0] : "Standard";
     addItemToCart(product, defaultSize, 1);
 }
